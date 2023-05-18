@@ -8,6 +8,5 @@ headers = {
 }
 
 response = requests.get(url, headers=headers)
-# response에서 name만 추출하여 새로운 리스트 생성
-genres = [genre['name'] for genre in response.json()['genres']]
-print(genres)
+
+print(response.text)

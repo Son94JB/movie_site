@@ -1,15 +1,18 @@
 from django.db import models
-
-# Create your models here.
+from django.conf import settings
+# 영화 목록 모델
 class Movie(models.Model):
-    title = models.models.CharField(max_length=20)
+    title = models.CharField(max_length=20)
 
+# 장르 목록 모델
 class Genre(models.Model):
-    title = models.CharField(max_length=10)
+    name = models.CharField(max_length=10)
 
+# 감독 목록 모델
 class Director(models.Model):
-    director = models.CharField(max_length=10)
+    name = models.CharField(max_length=10)
 
+# 영화 리뷰 모델
 class MovieReview(models.Model):
     # MovieReview 모델의 필드들을 정의
     # 내용, 생성일, 수정일, 점수, 영화id, 작성자id
@@ -18,9 +21,10 @@ class MovieReview(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     score = models.IntegerField()
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='moviereviews')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='moviereviews')
 
+# 영화 상세정보 모델
 class MovieDetail(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
@@ -29,3 +33,5 @@ class MovieDetail(models.Model):
     poster = models.FileField(blank=True, upload_to='posters/')
     # trailer 필드 추가, url 링크를 저장할 수 있는 URLField 사용
     trailer = models.URLField(blank=True)
+    moviereview = models.ForeignKey(MovieReview, on_delete=models.CASCADE, related_name='moviedetails')
+    
