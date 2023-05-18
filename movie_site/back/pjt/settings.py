@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'movies',
     'articles',
     'accounts',
+    'polls',
 
     'rest_framework',
     'rest_framework.authtoken',
@@ -157,4 +158,4 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'accounts.CustomUser'
+AUTH_USER_MODEL = 'accounts.User'

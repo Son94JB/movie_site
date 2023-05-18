@@ -1,5 +1,5 @@
 from django.db import models
-from pjt import settings
+from django.conf import settings
 
 # Create your models here.
 class Article(models.Model):
