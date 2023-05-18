@@ -26,19 +26,13 @@ class Actor(models.Model):
 
 # 영화 상세정보 모델
 class Movie(models.Model):
-    # movie = models.OneToOneField(Movie, on_delete=models.CASCADE)
     title = models.CharField(max_length=20)
     genre = models.ManyToManyField(Genre, related_name='movies')
     actor = models.ManyToManyField(Actor, related_name='movies')
     director = models.ManyToManyField(Director, related_name='movies')
-    # poster 필드 추가, 이미지 파일을 저장할 수 있는 FileField 사용
-    poster = models.FileField(blank=True, upload_to='posters/')
-    # trailer 필드 추가, url 링크를 저장할 수 있는 URLField 사용
-    trailer = models.URLField(blank=True)
-    # moviereview = models.ForeignKey(MovieReview, on_delete=models.CASCADE, related_name='moviedetails')
+    poster = models.TextField(blank=True)
+    trailer = models.TextField(blank=True)
     
-
-
 # 영화 리뷰 모델
 class MovieReview(models.Model):
     # MovieReview 모델의 필드들을 정의
