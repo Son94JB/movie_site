@@ -32,6 +32,7 @@ class MovieReview(models.Model):
 class MovieDetail(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
+    actor = models.ForeignKey(Actor, on_delete=models.CASCADE)
     director = models.ForeignKey(Director, on_delete=models.CASCADE)
     # poster 필드 추가, 이미지 파일을 저장할 수 있는 FileField 사용
     poster = models.FileField(blank=True, upload_to='posters/')
