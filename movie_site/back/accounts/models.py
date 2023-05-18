@@ -7,4 +7,4 @@ from django.conf import settings
 class CustomUser(AbstractUser):
     profile_image = models.ImageField(blank=True, upload_to='profile/')
     profile_text = models.TextField(blank=True)
-    movies = models.ManyToManyField('Movie', related_name='users')
+    movies = models.ManyToManyField('movies.Movie', related_name='users')
