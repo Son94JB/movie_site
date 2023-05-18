@@ -12,6 +12,10 @@ class Genre(models.Model):
 class Director(models.Model):
     name = models.CharField(max_length=10)
 
+# 배우 목록 모델
+class Actor(models.Model):
+    name = models.CharField(max_length=10)
+
 # 영화 리뷰 모델
 class MovieReview(models.Model):
     # MovieReview 모델의 필드들을 정의
