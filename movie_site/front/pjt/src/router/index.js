@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import ArticleView from '@/views/ArticleView.vue'
+import SearchView from '@/views/SearchView.vue'
 
 Vue.use(VueRouter)
 
@@ -17,6 +18,11 @@ const routes = [
     name: 'ArticleView',
     component: ArticleView
   },
+  {
+    path: '/movies/',
+    name: 'SearchView',
+    component: SearchView
+  }
 ]
 
 const router = new VueRouter({

@@ -10,12 +10,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    articles:[
-      
-    ],
+    articles:[],
     token: null,
-  },
-  getters: {
+    movies: [],
   },
   mutations: {
     GET_ARTICLES(state, articles) {
@@ -25,6 +22,10 @@ export default new Vuex.Store({
       state.token = token
       router.push({name : 'ArticleView'}) // store/index.js $router 접근 불가 -> import를 해야함
     },
+    SET_MOVIES(state, movies) {
+      state.movies = movies
+      console.log(state.movies)
+    }
   },
   actions: {
     getArticles(context) {
@@ -40,6 +41,21 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
+    searchMovies(context, searchTerm){
+      console.log(searchTerm)
+      axios.get(`http://127.0.0.1:8000/movies/${searchTerm}/`)
+      .then(response => {
+         context.commit('SET_MOVIES', response.data)
+       })
+       .catch(error => {
+          console.log(error)
+       })
+    },
+  },
+  getters: {
+    getMovies(state) {
+      return state.movies
+    }
   },
   modules: {
   }
