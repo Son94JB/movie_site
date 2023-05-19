@@ -2,8 +2,14 @@
   <div id="app">
     <nav>
       <router-link :to="{ name: 'HomeView' }">Home</router-link> | 
+<<<<<<< HEAD
       <router-link :to="{ name: 'ArticleView' }">Articles</router-link> | 
       <router-link :to="{ name: 'SearchView' }">Search</router-link> |
+=======
+      <router-link :to="{ name: 'ArticleView' }">게시판</router-link> | 
+      <router-link :to="{ name: 'SignUpView' }">회원가입</router-link> | 
+      <router-link :to="{ name: 'LogInView' }">LogIn</router-link>
+>>>>>>> 7ea5cc40e83b751d987bb0a51fdf27b2019ac356
       <p>여기는 App입니다.</p>
     </nav>
     <router-view/>

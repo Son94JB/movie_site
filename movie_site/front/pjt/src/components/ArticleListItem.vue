@@ -1,11 +1,17 @@
 <template>
-  <p>여기는 ArticleListItem입니다.</p>
+  <div>
+    <h4>{{ article.id }}</h4>
+    <p>{{ article.title }}</p>
+    <hr>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'ArticleListItem', // 각 게시물을 나타낼 vue파일
-
+  props: {
+    article: Object
+  }
 }
 </script>
 

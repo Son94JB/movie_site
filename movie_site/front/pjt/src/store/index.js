@@ -12,7 +12,15 @@ export default new Vuex.Store({
   state: {
     articles:[],
     token: null,
+<<<<<<< HEAD
     movies: [],
+=======
+  },
+  getters: {
+    isLogin(state) {
+      return state.token ? true : false
+    }
+>>>>>>> 7ea5cc40e83b751d987bb0a51fdf27b2019ac356
   },
   mutations: {
     GET_ARTICLES(state, articles) {
@@ -33,14 +41,14 @@ export default new Vuex.Store({
         method: 'get',
         url: `${API_URL}/api/v1/articles/`,
       })
-        .then((res) => {
-        // console.log(res, context)
+        .then(res => {
           context.commit('GET_ARTICLES', res.data)
         })
-        .catch((err) => {
+        .catch(err => {
         console.log(err)
       })
     },
+<<<<<<< HEAD
     searchMovies(context, searchTerm){
       console.log(searchTerm)
       axios.get(`http://127.0.0.1:8000/movies/${searchTerm}/`)
@@ -55,6 +63,22 @@ export default new Vuex.Store({
   getters: {
     getMovies(state) {
       return state.movies
+=======
+    logIn(context, payload){
+      const username = payload.username
+      const password = payload.password
+      axios({
+        method: 'post',
+        url: `${API_URL}/accounts/login/`,
+        data: {
+          username, password
+        }
+      })
+        .then((res) => {
+        context.commit('SAVE_TOKEN', res.data.key)
+        })
+      .catch((err) => console.log(err))
+>>>>>>> 7ea5cc40e83b751d987bb0a51fdf27b2019ac356
     }
   },
   modules: {
