@@ -10,12 +10,13 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    articles:[
-      
-    ],
+    articles:[],
     token: null,
   },
   getters: {
+    isLogin(state) {
+      return state.token ? true : false
+    }
   },
   mutations: {
     GET_ARTICLES(state, articles) {
@@ -32,14 +33,28 @@ export default new Vuex.Store({
         method: 'get',
         url: `${API_URL}/api/v1/articles/`,
       })
-        .then((res) => {
-        // console.log(res, context)
+        .then(res => {
           context.commit('GET_ARTICLES', res.data)
         })
-        .catch((err) => {
+        .catch(err => {
         console.log(err)
       })
     },
+    logIn(context, payload){
+      const username = payload.username
+      const password = payload.password
+      axios({
+        method: 'post',
+        url: `${API_URL}/accounts/login/`,
+        data: {
+          username, password
+        }
+      })
+        .then((res) => {
+        context.commit('SAVE_TOKEN', res.data.key)
+        })
+      .catch((err) => console.log(err))
+    }
   },
   modules: {
   }

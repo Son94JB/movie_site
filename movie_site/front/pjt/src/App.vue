@@ -2,7 +2,9 @@
   <div id="app">
     <nav>
       <router-link :to="{ name: 'HomeView' }">Home</router-link> | 
-      <router-link :to="{ name: 'ArticleView' }">Articles</router-link> | 
+      <router-link :to="{ name: 'ArticleView' }">게시판</router-link> | 
+      <router-link :to="{ name: 'SignUpView' }">회원가입</router-link> | 
+      <router-link :to="{ name: 'LogInView' }">LogIn</router-link>
       <p>여기는 App입니다.</p>
     </nav>
     <router-view/>

@@ -16,10 +16,8 @@ from .models import Article, Comment
 
 
 @api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
 def article_list(request):
     if request.method == 'GET':
-        # articles = Article.objects.all()
         articles = get_list_or_404(Article)
         serializer = ArticleListSerializer(articles, many=True)
         return Response(serializer.data)
@@ -27,8 +25,7 @@ def article_list(request):
     elif request.method == 'POST':
         serializer = ArticleSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            # serializer.save(user=request.user)
+            serializer.save(user = request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 

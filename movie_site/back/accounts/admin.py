@@ -6,3 +6,5 @@ from .models import User
 #     list_display = ['username', 'password',]
 
 # admin.site.register(User, UserAdmin)
+
+admin.site.register(User)
