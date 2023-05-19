@@ -1,6 +1,8 @@
 import requests
 import json
 import os
+import subprocess
+
 
 keyword = input("검색할 영화 제목을 입력하세요: ")
 url = f"https://api.themoviedb.org/3/search/movie?query={keyword}&include_adult=false&language=ko-KR&page=1"
@@ -128,3 +130,7 @@ with open(file_path, "r+", encoding="utf-8") as file:
     file.seek(0)
     json.dump(movies, file, indent=4, ensure_ascii=False)
     file.truncate()
+
+subprocess.call(["python", "manage.py", "loaddata", "actors.json"])
+subprocess.call(["python", "manage.py", "loaddata", "directors.json"])
+subprocess.call(["python", "manage.py", "loaddata", "movies.json"])

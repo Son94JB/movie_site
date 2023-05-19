@@ -488,5 +488,68 @@
         "fields": {
             "name": "Olicer J. Munoz"
         }
+    },
+    {
+        "model": "movies.director",
+        "pk": 1243962,
+        "fields": {
+            "name": "Tatsuyuki Nagai"
+        }
+    },
+    {
+        "model": "movies.director",
+        "pk": 1594439,
+        "fields": {
+            "name": "Soner Caner"
+        }
+    },
+    {
+        "model": "movies.director",
+        "pk": 572222,
+        "fields": {
+            "name": "Bongsoo"
+        }
+    },
+    {
+        "model": "movies.director",
+        "pk": 1134991,
+        "fields": {
+            "name": "Park Eun-hyung"
+        }
+    },
+    {
+        "model": "movies.director",
+        "pk": 133057,
+        "fields": {
+            "name": "Naoto Kumazawa"
+        }
+    },
+    {
+        "model": "movies.director",
+        "pk": 222861,
+        "fields": {
+            "name": "Lee Jung-Chul"
+        }
+    },
+    {
+        "model": "movies.director",
+        "pk": 30038,
+        "fields": {
+            "name": "Glenn Jordan"
+        }
+    },
+    {
+        "model": "movies.director",
+        "pk": 2987106,
+        "fields": {
+            "name": "Yoko Ikeda"
+        }
+    },
+    {
+        "model": "movies.director",
+        "pk": 3222054,
+        "fields": {
+            "name": "Yun Choi"
+        }
     }
 ]
