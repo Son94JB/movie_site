@@ -27,7 +27,7 @@ class Movie(models.Model):
     genre = models.ManyToManyField(Genre)
     actor = models.ManyToManyField(Actor)
     director = models.ManyToManyField(Director)
-    poster = models.TextField(blank=True)
+    poster = models.TextField(blank=True, null=True)
     trailer = models.TextField(blank=True)
     
 # 영화 리뷰 모델

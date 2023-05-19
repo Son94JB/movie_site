@@ -14,7 +14,7 @@ genre_list = []
 for genre in response["genres"]:
     genre_list.append({
         "model": "movies.genre",
-        "id": genre["id"],
+        "pk": genre["id"],
         "fields": {
             "name": genre["name"],
         }
