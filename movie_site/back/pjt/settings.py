@@ -37,11 +37,7 @@ INSTALLED_APPS = [
     'polls',
 
     'corsheaders',
-<<<<<<< HEAD
-    'django_extensions',
-=======
 
->>>>>>> 7ea5cc40e83b751d987bb0a51fdf27b2019ac356
     'rest_framework',
     'rest_framework.authtoken',
     'dj_rest_auth',
@@ -183,10 +179,7 @@ AUTH_USER_MODEL = 'accounts.User'
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8080',
-<<<<<<< HEAD
     'http://127.0.0.1:8080'
-=======
->>>>>>> 7ea5cc40e83b751d987bb0a51fdf27b2019ac356
 ]
 
 CORS_ALLOWED_ALL_ORIGINS = True

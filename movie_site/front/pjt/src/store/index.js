@@ -12,15 +12,30 @@ export default new Vuex.Store({
   state: {
     articles:[],
     token: null,
-<<<<<<< HEAD
     movies: [],
-=======
   },
   getters: {
     isLogin(state) {
       return state.token ? true : false
-    }
->>>>>>> 7ea5cc40e83b751d987bb0a51fdf27b2019ac356
+    },
+    getMovies(state) {
+      return state.movies
+    },
+    logIn(context, payload){
+      const username = payload.username
+      const password = payload.password
+      axios({
+        method: 'post',
+        url: `${API_URL}/accounts/login/`,
+        data: {
+          username, password
+        }
+      })
+        .then((res) => {
+        context.commit('SAVE_TOKEN', res.data.key)
+        })
+      .catch((err) => console.log(err))
+    },
   },
   mutations: {
     GET_ARTICLES(state, articles) {
@@ -48,39 +63,17 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
-<<<<<<< HEAD
     searchMovies(context, searchTerm){
       console.log(searchTerm)
       axios.get(`http://127.0.0.1:8000/movies/${searchTerm}/`)
       .then(response => {
-         context.commit('SET_MOVIES', response.data)
-       })
-       .catch(error => {
+        context.commit('SET_MOVIES', response.data)
+      })
+      .catch(error => {
           console.log(error)
-       })
+      })
     },
   },
-  getters: {
-    getMovies(state) {
-      return state.movies
-=======
-    logIn(context, payload){
-      const username = payload.username
-      const password = payload.password
-      axios({
-        method: 'post',
-        url: `${API_URL}/accounts/login/`,
-        data: {
-          username, password
-        }
-      })
-        .then((res) => {
-        context.commit('SAVE_TOKEN', res.data.key)
-        })
-      .catch((err) => console.log(err))
->>>>>>> 7ea5cc40e83b751d987bb0a51fdf27b2019ac356
-    }
-  },
   modules: {
-  }
+  },
 })
