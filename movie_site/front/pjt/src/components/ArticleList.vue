@@ -14,13 +14,14 @@ import ArticleListItem from '@/components/ArticleListItem.vue'
 export default {
   name: 'ArticleList',  // 게시글 목록
   created() {
-    // this.getArticles()
+    this.getArticles()
   },
 
   methods: {
     getArticles() {
         this.$store.dispatch('getArticles')
     },
+
   },
   components: {
     ArticleListItem,

@@ -18,14 +18,6 @@ export default {
     // BestArticleList,
     ArticleList,
   },
-  created() {
-    this.getArticles()
-  },
-  methods: {
-    getArticles() {
-        this.$store.dispatch('getArticles')
-    }
-  },
 }
 </script>
 

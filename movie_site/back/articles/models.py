@@ -10,7 +10,7 @@ class Article(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    like_article = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='like_article')
+    article_like = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='article_like')
 
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -19,7 +19,7 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    like_comment = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='like_comment')
+    comment_like = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='comment_like')
 
 class CommentLike(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

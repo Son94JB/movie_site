@@ -5,9 +5,7 @@ from django.conf import settings
 
 # Create your models here.
 class User(AbstractUser):
-    profile_image = models.ImageField(blank=True, upload_to='profile/')
-    profile_text = models.TextField(blank=True)
-    movies = models.ManyToManyField('movies.Movie', related_name='users')
+    pass
 
 class Following(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
