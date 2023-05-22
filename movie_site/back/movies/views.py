@@ -124,7 +124,7 @@ class MovieDetailView(APIView):
         poster = movie.poster
         actors = movie.actor.all()
         directors = movie.director.all()
-        genre = movie.genre.all()
+        genres = movie.genre.all()
         title = movie.title
         trailer = movie.trailer
 
@@ -192,17 +192,22 @@ class MovieDetailView(APIView):
             # 이제 모든 감독의 프로필 사진이 담긴 리스트가 생긴 것
             director_profile_list.append(director_data)
 
+        # genre 순회하면서 genre의 name을 가져옴
+        # 각 장르들의 name을 가져올 것
+        genre_list = []
+        for genre in genres:
+            genre_list.append(genre.name)
+        
 
         # 가져온 필드들을 하나의 딕셔너리로 만듦
         movie_detail = {
-            # "title": title,
-            # "overview": overview,
-            # "poster": poster,
-            "genre": genre,
-            # "actor_profiles": actor_profile_list,
-            # "director_profiles": director_profile_list,
-            # "trailer": trailer,
+            "title": title,
+            "overview": overview,
+            "poster": poster,
+            "genre": genre_list,
+            "actor_profiles": actor_profile_list,
+            "director_profiles": director_profile_list,
+            "trailer": trailer,
         }
-        # json.dump(movie_detail)
-        # print(serializers.serialize('json',movie_detail))
-        # return Response({})
+        
+        return Response(movie_detail)

@@ -44,7 +44,7 @@ const routes = [
     component: LogInView
   },
   {
-    path: '/detail/:id',
+    path: '/detail/',
     name: 'DetailView',
     component: DetailView
   }

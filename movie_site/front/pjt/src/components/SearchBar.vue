@@ -15,6 +15,7 @@ export default {
   methods: {
     searchMovies() {
       // Vuex 액션 호출하여 검색 요청 보내기
+      this.$router.push({ name: 'SearchView' });
       this.$store.dispatch('searchMovies', this.searchTerm);
     },
   },

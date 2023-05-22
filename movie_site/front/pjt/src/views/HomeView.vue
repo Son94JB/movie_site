@@ -18,7 +18,7 @@ export default {
   computed: {
     // movieList를 통해 vuex의 state에 getters로 접근
     movieList() {
-      return this.$store.getters.getMovies;
+      return this.$store.getters.Movies;
     }
   },
   
