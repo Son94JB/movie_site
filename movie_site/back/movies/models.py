@@ -28,8 +28,9 @@ class Movie(models.Model):
     actor = models.ManyToManyField(Actor)
     director = models.ManyToManyField(Director)
     poster = models.TextField(blank=True, null=True)
-    trailer = models.TextField(blank=True)
-    
+    trailer = models.TextField(null=True, blank=True)
+    # adult = models.BooleanField(default=False)
+
 # 영화 리뷰 모델
 class MovieReview(models.Model):
     # MovieReview 모델의 필드들을 정의

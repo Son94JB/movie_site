@@ -13,6 +13,7 @@ export default new Vuex.Store({
     articles:[],
     token: null,
     movies: [],
+    movieDetail: null,
   },
   getters: {
     isLogin(state) {
@@ -48,6 +49,9 @@ export default new Vuex.Store({
     SET_MOVIES(state, movies) {
       state.movies = movies
       console.log(state.movies)
+    },
+    setMoviedetails(state, detail) {
+      state.movieDetail = detail
     }
   },
   actions: {
@@ -71,6 +75,15 @@ export default new Vuex.Store({
       })
       .catch(error => {
           console.log(error)
+      })
+    },
+    fetchMovieDetail(context, movie_id) {
+      axios.get(`http://127.0.0.1:8000/movies/detail/${movie_id}/`)
+      .then(response => {
+        context.commit('setMoviedetails', response.data)
+      })
+      .catch(error => {
+        console.log(error)
       })
     },
   },

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input v-model="searchTerm" type="text" placeholder="검색어를 입력하세요" />
+    <input v-model="searchTerm" type="text" placeholder="영화 검색" />
     <button @click="searchMovies">검색</button>
   </div>
 </template>
