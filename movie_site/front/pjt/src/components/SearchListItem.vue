@@ -21,7 +21,7 @@
     methods: {
       showDetail(movieId) {
         // movieId를 통해 영화 상세 정보 페이지로 이동
-        this.$router.push({ name: 'DetailView', params: { movieId } });
+        this.$router.push(`/detail/${movieId}`);
         this.$store.dispatch('fetchMovieDetail', movieId);
       }
     },

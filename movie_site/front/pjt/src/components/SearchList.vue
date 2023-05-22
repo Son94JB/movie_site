@@ -17,11 +17,12 @@ export default {
         SearchListItem,
     },
     props: {
-        movieList: {
-            type: Array,
-            default: () => [],
-        },
-    },
+      movieList: {
+      type: Object,
+      default: () => ({}),
+  },
+},
+
 }
 </script>
 

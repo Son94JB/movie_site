@@ -173,3 +173,5 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOWED_ALL_ORIGINS = True
+
+ASYNCIO_EVENT_LOOP = "asyncio.SelectorEventLoop"

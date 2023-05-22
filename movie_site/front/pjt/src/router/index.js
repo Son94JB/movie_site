@@ -26,7 +26,7 @@ const routes = [
     component: ArticleView
   },
   {
-    path: '/movies/',
+    path: '/movies/:id',
     name: 'SearchView',
     component: SearchView
   },
@@ -73,7 +73,7 @@ const routes = [
   //   component: 
   // },
   {
-    path: '/detail/',
+    path: '/detail/:id',
     name: 'DetailView',
     component: DetailView
   }
