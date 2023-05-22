@@ -7,6 +7,7 @@ import ArticleCreate from '@/views/ArticleCreate.vue'
 import SignUpView from '@/views/SignUpView.vue'
 import LogInView from '@/views/LogInView.vue'
 import ArticleDetailView from '@/views/ArticleDetailView.vue'
+import DetailView from '@/views/DetailView.vue'
 
 Vue.use(VueRouter)
 
@@ -71,6 +72,11 @@ const routes = [
   //   name: '',
   //   component: 
   // },
+  {
+    path: '/detail/',
+    name: 'DetailView',
+    component: DetailView
+  }
 ]
 
 const router = new VueRouter({

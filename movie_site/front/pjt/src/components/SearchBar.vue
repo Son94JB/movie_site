@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input v-model="searchTerm" type="text" placeholder="검색어를 입력하세요" />
+    <input v-model="searchTerm" type="text" placeholder="영화 검색" />
     <button @click="searchMovies">검색</button>
   </div>
 </template>
@@ -15,6 +15,7 @@ export default {
   methods: {
     searchMovies() {
       // Vuex 액션 호출하여 검색 요청 보내기
+      this.$router.push({ name: 'SearchView' });
       this.$store.dispatch('searchMovies', this.searchTerm);
     },
   },

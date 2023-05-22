@@ -17,12 +17,13 @@ export default new Vuex.Store({
     token: null,
     movies: [],
     // comments: []
+    movieDetail: null,
   },
   getters: {
     isLogin(state) {
       return state.token ? true : false
     },
-    getMovies(state) {
+    Movies(state) {
       return state.movies
     },
     logIn(context, payload){
@@ -40,6 +41,9 @@ export default new Vuex.Store({
         })
       .catch((err) => console.log(err))
     },
+    movieDetail(state) {
+      return state.movieDetail
+    }
   },
   mutations: {
     GET_ARTICLES(state, articles) {
@@ -58,6 +62,10 @@ export default new Vuex.Store({
     SET_MOVIES(state, movies) {
       state.movies = movies
       console.log(state.movies)
+    },
+    // detail은 fetchMovieDetail에서 받아온 response.data
+    setMoviedetails(state, detail) {
+      state.movieDetail = detail
     }
   },
   actions: {
@@ -131,6 +139,15 @@ export default new Vuex.Store({
         context.commit('SAVE_TOKEN', res.data.key)
         })
       .catch((err) => console.log(err))
+    },
+    fetchMovieDetail(context, movieId) {
+      axios.get(`http://127.0.0.1:8000/movies/detail/${movieId}/`)
+      .then(response => {
+        context.commit('setMoviedetails', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
     },
   },
   modules: {

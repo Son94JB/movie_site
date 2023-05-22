@@ -1,7 +1,11 @@
 <template>
   <div>
-    <p>여기는 SearchList입니다.</p>
-    <SearchListItem v-for="movie in movieList" :key="movie.id" :movie="movie"/>
+    <!-- 검색결과가 있다면 검색결과 출력 그렇지 않다면 검색결과가 없습니다 출력 -->
+    <p v-if="movieList.length > 0" class="search-result">검색결과</p>
+    <p v-else class="no-results">검색결과가 없습니다.</p>
+    <SearchListItem 
+    v-for="movie in movieList" :key="movie.id" :movie="movie"
+    />
   </div>
 </template>
 
