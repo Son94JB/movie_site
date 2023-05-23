@@ -17,6 +17,6 @@ def get_movie_trailer(movie_title, api_key):
         video_id = trailer['id']['videoId']
         video_title = trailer['snippet']['title']
         video_url = f'https://www.youtube.com/watch?v={video_id}'
-        return video_title, video_url
+        return video_title, video_url, video_id
 
-    return None, None
+    return None, None, None

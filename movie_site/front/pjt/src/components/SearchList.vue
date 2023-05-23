@@ -18,8 +18,8 @@ export default {
     },
     props: {
       movieList: {
-      type: Object,
-      default: () => ({}),
+      type: Array,
+      default: () => ([]),
   },
 },
 

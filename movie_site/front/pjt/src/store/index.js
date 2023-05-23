@@ -18,6 +18,9 @@ export default new Vuex.Store({
     movies: [],
     // comments: []
     movieDetail: null,
+    searchTerm: '',  // 검색어
+    actorDetail: null,
+    directorDetail: null,
   },
   getters: {
     isLogin(state) {
@@ -43,6 +46,12 @@ export default new Vuex.Store({
     },
     movieDetail(state) {
       return state.movieDetail
+    },
+    actorDetail(state) {
+      return state.actorDetail
+    },
+    directorDetail(state) {
+      return state.directorDetail
     }
   },
   mutations: {
@@ -66,6 +75,18 @@ export default new Vuex.Store({
     // detail은 fetchMovieDetail에서 받아온 response.data
     setMoviedetails(state, detail) {
       state.movieDetail = detail
+    },
+    RESET_SEARCH_DATA(state) {
+      state.searchTerm = ''
+      state.movies = []
+      state.movieDetail = null
+      console.log(state.searchTerm)
+    },
+    setActorDetails(state, detail) {
+      state.actorDetail = detail
+    },
+    setDirectorDetails(state, detail) {
+      state.directorDetail = detail
     }
   },
   actions: {
@@ -93,6 +114,7 @@ export default new Vuex.Store({
     // },
     searchMovies(context, searchTerm){
       console.log(searchTerm)
+      // context.commit('SET_SEARCH_TERM', searchTerm)
       axios.get(`http://127.0.0.1:8000/movies/${searchTerm}/`)
       .then(response => {
         context.commit('SET_MOVIES', response.data)
@@ -149,6 +171,27 @@ export default new Vuex.Store({
         console.log(error)
       })
     },
+    resetSearchTerm(context) {
+      context.commit('RESET_SEARCH_DATA', '');
+    },
+    fetchActorDetail(context, actorId) {
+      axios.get(`http://127.0.0.1:8000/movies/actor/${actorId}/`)
+      .then(response => {
+        context.commit('setActorDetails', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+    fetchDirectorDetail(context, directorId) {
+      axios.get(`http://127.0.0.1:8000/movies/director/${directorId}/`)
+      .then(response => {
+        context.commit('setDirectorDetails', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    }
   },
   modules: {
   },

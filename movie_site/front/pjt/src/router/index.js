@@ -8,6 +8,8 @@ import SignUpView from '@/views/SignUpView.vue'
 import LogInView from '@/views/LogInView.vue'
 import ArticleDetailView from '@/views/ArticleDetailView.vue'
 import DetailView from '@/views/DetailView.vue'
+// import store from  '@/store/index.js'
+import ActorDetailView from '@/views/ActorDetailView.vue'
 
 Vue.use(VueRouter)
 
@@ -76,13 +78,28 @@ const routes = [
     path: '/detail/:id',
     name: 'DetailView',
     component: DetailView
+  },
+  {
+    path: '/actor/:id',
+    name: 'ActorDetailView',
+    component: ActorDetailView
   }
 ]
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  duplicateNavigationPolicy: 'ignore', // 중복 네비게이션 경고 비활성화
+
 })
+
+// router.beforeEach((to, from, next) => {
+//   // 검색 정보 초기화
+//   store.dispatch('resetSearchTerm');
+//   next();
+// })
+
+
 
 export default router

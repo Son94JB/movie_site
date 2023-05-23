@@ -4,8 +4,8 @@
       <router-link :to="{ name: 'HomeView' }">Home</router-link> | 
       <router-link :to="{ name: 'ArticleView' }">Articles</router-link> | 
       <router-link :to="{ name: 'SignUpView' }">SignUp</router-link> | 
-      <router-link :to="{ name: 'LogInView' }">LogIn</router-link>
-    </nav>
+      <router-link :to="{ name: 'LogInView' }">LogIn</router-link> |
+      </nav>
     <router-view/>
   </div>
 </template>
