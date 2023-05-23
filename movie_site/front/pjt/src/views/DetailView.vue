@@ -8,7 +8,7 @@
         <div>
           <h2>출연진</h2>
           <div v-for="actor in movieDetail.actor_profiles" :key=actor.name>
-          <img v-if="actor.profile_path" class="actor-profile" :src="`https://image.tmdb.org/t/p/w500/${actor.profile_path}`" alt="actor profile" />
+          <img @click="getActorDetail(actor)" v-if="actor.profile_path" class="actor-profile" :src="`https://image.tmdb.org/t/p/w500/${actor.profile_path}`" alt="actor profile" />
           <p>{{ actor.name }}</p>
           </div>
         </div>
@@ -37,11 +37,15 @@
       <template v-else>
         로딩 중...
       </template>
+      <YoutubeTrailerVue/>
     </div>
   </template>
   
 
 <script>
+import YoutubeTrailerVue from '@/components/YoutubeTrailer.vue'
+
+
 export default {
     name: 'DetailView', // 영화 상세 정보
     computed: {
@@ -50,7 +54,17 @@ export default {
             return this.$store.getters.movieDetail
         },
     },
+    components: {
+      YoutubeTrailerVue
+    },
+    methods: {
+      getActorDetail(actor) {
+        console.log(actor);
+        this.$router.push({name: 'ActorDetailView', params: {id: actor.id}});
+      }
+    }
 }
+
 </script>
 
 <style>

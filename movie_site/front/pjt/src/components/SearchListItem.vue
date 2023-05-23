@@ -1,6 +1,6 @@
 <template>
-  <!-- 클릭하면 showDetail메서드 작동 -->
-  <div @click="showDetail(movie.id)" class="search-list-item">
+  <!-- 클릭하면 showDetail메서드 작동 -->  
+  <div v-if="movie" @click="showDetail(movie.id)" class="search-list-item">
     <img v-if="movie.poster" class="movie-poster" :src="`https://image.tmdb.org/t/p/w500/${movie.poster}`" alt="movie poster" />
     <div class="movie-details">
       <h1 class="movie-title">{{ movie.title }}</h1>
@@ -14,8 +14,8 @@
     name: 'SearchListItem',
     props: {
       movie: {
-        type: Array,
-        default: () => [],
+        type: Object,
+        default: () => {},
       },
     },
     methods: {

@@ -12,11 +12,13 @@ class Genre(models.Model):
 # 감독 목록 모델
 class Director(models.Model):
     name = models.CharField(max_length=10)
+    profile_path = models.TextField(blank=True, null=True)
 
 
 # 배우 목록 모델
 class Actor(models.Model):
     name = models.CharField(max_length=10)
+    profile_path = models.TextField(blank=True, null=True)
  
 
 
@@ -29,6 +31,7 @@ class Movie(models.Model):
     director = models.ManyToManyField(Director)
     poster = models.TextField(blank=True, null=True)
     trailer = models.TextField(null=True, blank=True)
+    trailer_id = models.TextField(null=True, blank=True)
     # adult = models.BooleanField(default=False)
 
 # 영화 리뷰 모델

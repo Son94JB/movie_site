@@ -1,19 +1,18 @@
 <template>
   <div>
     <h1>MOVIE.gg</h1>
-    <SearchView/>
+    <SearchBar/>
   </div>
   
 </template>
 
 <script>
-
-import SearchView from '@/views/SearchView.vue';
+import SearchBar from '@/components/SearchBar.vue'; // SearchBar 컴포넌트를 불러옴
 
 export default {
   name: 'HomeView',
   components: {
-    SearchView,
+    SearchBar,
   },
   computed: {
     // movieList를 통해 vuex의 state에 getters로 접근
