@@ -1,15 +1,15 @@
 <template>
   <div id="app">
     <nav>
+      <p>여기는 App입니다.</p>
       <router-link :to="{ name: 'HomeView' }">Home</router-link> | 
       <router-link :to="{ name: 'SearchView' }">Search</router-link> |
-      <router-link :to="{ name: 'ArticleView' }">게시판</router-link> | 
-      <router-link :to="{ name: 'SignUpView' }">회원가입</router-link> | 
-      <router-link :to="{ name: 'LogInView' }">LogIn</router-link>
-      <p>여기는 App입니다.</p>
+      <router-link :to="{ name: 'ArticleView' }">Article</router-link> |  
+      <router-link :to="{ name: 'LogInView' }">LogIn</router-link> |
+      <router-link :to="{ name: 'SignUpView' }">SignUp</router-link> |
+    <button @click="logOut">LogOut</button>
     </nav>
     <router-view/>
-    <SearchBar/> <!--MovieSearch 컴포넌트 추가-->
   </div>
 </template>
 
@@ -37,12 +37,21 @@ nav a.router-link-exact-active {
 </style>
 
 <script>
-import SearchBar from './components/SearchBar.vue'; // SearchBar 컴포넌트를 불러옴
+// import axios from 'axios';
+// const API_URL = 'http://127.0.0.1:8000'
 
 export default {
   name: 'App',
-  components: {
-    SearchBar, // SearchBar 컴포넌트를 등록
-  },
+  methods:{
+    logOut(){
+      if(this.$store.getters.isLogin){
+      this.$store.dispatch('deleteToken')
+      alert('로그아웃')
+      this.$router.push({name: 'LogInView'})
+      }else{
+        alert('이미 로그아웃 돼있습니다.')
+      }
+    }
+  }
 }
 </script>

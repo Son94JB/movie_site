@@ -13,10 +13,21 @@ import ArticleListItem from '@/components/ArticleListItem.vue'
 
 export default {
   name: 'ArticleList',  // 게시글 목록
+  // data : function(){
+  //   return {
+  //     id : this.$route.params.article.id
+  //   }
+  // },
   created() {
-    // this.getArticles()
+    this.getArticles()
   },
-
+  // beforeRouteUpdate(to, from, next){
+  //   if(this.article.id != to.params.id){
+  //   next()
+  //   }else{
+  //     next(false)
+  //   }
+  // },
   methods: {
     getArticles() {
         this.$store.dispatch('getArticles')
@@ -29,7 +40,7 @@ export default {
     articles(){
       return this.$store.state.articles
     }
-  }
+  },
 }
 </script>
 

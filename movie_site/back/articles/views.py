@@ -1,4 +1,3 @@
-
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 # Authentication Decorators
@@ -30,13 +29,14 @@ def article_list(request):
 
 
 @api_view(['GET', 'DELETE', 'PUT'])
+# @permission_classes([IsAuthenticated])
 def article_detail(request, article_pk):
     # article = Article.objects.get(pk=article_pk)
     article = get_object_or_404(Article, pk=article_pk)
 
     if request.method == 'GET':
         serializer = ArticleSerializer(article)
-        print(serializer.data)
+        # print(serializer.data)
         return Response(serializer.data)
     
     elif request.method == 'DELETE':
@@ -50,42 +50,41 @@ def article_detail(request, article_pk):
             return Response(serializer.data)
 
 
-@api_view(['GET'])
-def comment_list(request):
+@api_view(['GET', 'PUT', 'DELETE'])
+def comment_list(request, article_pk):
     if request.method == 'GET':
         # comments = Comment.objects.all()
-        comments = get_list_or_404(Comment)
+        comments = get_list_or_404(Comment, article=article_pk)
         serializer = CommentSerializer(comments, many=True)
+
         return Response(serializer.data)
-
-
-@api_view(['GET', 'DELETE', 'PUT'])
-def comment_detail(request, comment_pk):
-    # comment = Comment.objects.get(pk=comment_pk)
-    comment = get_object_or_404(Comment, pk=comment_pk)
-
-    if request.method == 'GET':
-        serializer = CommentSerializer(comment)
-        return Response(serializer.data)
-
-    elif request.method == 'DELETE':
-        comment.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-    elif request.method == 'PUT':
-        serializer = CommentSerializer(comment, data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data)
-
     
+    # elif request.method == 'PUT':
+    #     serializer = CommentSerializer(comment, data=request.data)
+    #     if serializer.is_valid(raise_exception=True):
+    #         serializer.save()
+    #         return Response(serializer.data)
 
+    # elif request.method == 'DELETE':
+    #     comment.delete()
+    #     return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
 def comment_create(request, article_pk):
+    print('==================================================================')
+    print('일단 POST요청은 들어왔어요')
+    print('==================================================================')
     # article = Article.objects.get(pk=article_pk)
     article = get_object_or_404(Article, pk=article_pk)
+    print(request.data)
     serializer = CommentSerializer(data=request.data)
+    print('==================================================================')
+    print('serializer 변수받아옴')
+    print('==================================================================')
     if serializer.is_valid(raise_exception=True):
+        print('==================================================================')
+        print('!!serializer valid함!!')
+        print('==================================================================')
         serializer.save(article=article)
         return Response(serializer.data, status=status.HTTP_201_CREATED)

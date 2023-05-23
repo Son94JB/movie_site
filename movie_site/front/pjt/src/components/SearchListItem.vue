@@ -1,21 +1,29 @@
 <template>
-    <div class="search-list-item">
-      <img class="movie-poster" :src="`https://image.tmdb.org/t/p/w500/${movie.poster}`" alt="movie poster" />
-      <div class="movie-details">
-        <h1 class="movie-title">{{ movie.title }}</h1>
-        <p class="movie-overview">{{ movie.overview }}</p>
-      </div>
+  <!-- 클릭하면 showDetail메서드 작동 -->  
+  <div v-if="movie" @click="showDetail(movie.id)" class="search-list-item">
+    <img v-if="movie.poster" class="movie-poster" :src="`https://image.tmdb.org/t/p/w500/${movie.poster}`" alt="movie poster" />
+    <div class="movie-details">
+      <h1 class="movie-title">{{ movie.title }}</h1>
+      <p class="movie-overview">{{ movie.overview }}</p>
     </div>
-  </template>
+  </div>
+</template>
   
   <script>
   export default {
     name: 'SearchListItem',
     props: {
       movie: {
-        type: Array,
-        default: () => [],
+        type: Object,
+        default: () => {},
       },
+    },
+    methods: {
+      showDetail(movieId) {
+        // movieId를 통해 영화 상세 정보 페이지로 이동
+        this.$router.push(`/detail/${movieId}`);
+        this.$store.dispatch('fetchMovieDetail', movieId);
+      }
     },
   }
   </script>

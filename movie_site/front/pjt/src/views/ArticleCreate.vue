@@ -43,6 +43,9 @@ export default {
         method: "post",
         url: `${API_URL}/api/v1/articles/`,
         data: {title, content},
+        headers:{
+          Authorization: `Token ${this.$store.state.token}`
+        }
       }).then(() => {
         // console.log(res)
         this.$router.push({name: 'ArticleView'})
@@ -52,42 +55,6 @@ export default {
     } 
   }
 }
-
-// export default {
-//   name: 'ArticleCreate',
-//   data() {
-//     return {
-//       title: null,
-//       content: null,
-//     }
-//   },
-//   methods: {
-//     createArticle() {
-//       const title = this.title
-//       const content = this.content
-
-//       if (!title) {
-//         alert('제목 입력해주세요')
-//         return
-//       } else if (!content){
-//         alert('내용 입력해주세요')
-//         return
-//       }
-//       axios({
-//         method: 'post',
-//         url: `${API_URL}/api/v1/articles/`,
-//         data: {title, content},
-//       })
-//       .then(() => {
-//         // console.log(res)
-//         this.$router.push({name: 'ArticleView'})
-//       })
-//       .catch((err) => {
-//         console.log(err)
-//       })
-//     }
-//   }
-// }
 </script>
 
 <style>

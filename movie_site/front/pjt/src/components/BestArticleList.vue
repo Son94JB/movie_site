@@ -1,5 +1,7 @@
 <template>
-  <p>여기는 BestArticleList입니다.</p>
+  <div>
+    <p>여기는 BestArticleList입니다.</p>
+  </div>
 </template>
 
 <script>
