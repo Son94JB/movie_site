@@ -1,4 +1,3 @@
-
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 # Authentication Decorators
@@ -16,7 +15,6 @@ from .models import Article, Comment
 
 
 @api_view(['GET', 'POST'])
-
 def article_list(request):
     if request.method == 'GET':
         articles = get_list_or_404(Article)
@@ -72,15 +70,14 @@ def comment_list(request, article_pk):
     #     return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
 def comment_create(request, article_pk):
     print('==================================================================')
     print('일단 POST요청은 들어왔어요')
     print('==================================================================')
     # article = Article.objects.get(pk=article_pk)
-    article = get_object_or_404(Article, article_pk=article_pk)
-    print('==================================================================')
-    print('article 변수받아옴')
-    print('==================================================================')
+    article = get_object_or_404(Article, pk=article_pk)
+    print(request.data)
     serializer = CommentSerializer(data=request.data)
     print('==================================================================')
     print('serializer 변수받아옴')

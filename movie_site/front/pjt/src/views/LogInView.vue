@@ -24,14 +24,14 @@ export default {
   },
   methods: {
     logIn() {
+      const username = this.username
+      const password = this.password
+
       if (!username) {
         alert('아이디를 입력해주세요')
       }else if (!password) {
         alert('비밀번호를 입력해주세요')
       }
-
-      const username = this.username
-      const password = this.password
 
       const payload = {
         username, password

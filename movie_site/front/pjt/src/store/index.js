@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+
 import axios from 'axios'
 import createPersistedState from 'vuex-persistedstate'
 import router from '../router'
@@ -14,9 +15,8 @@ export default new Vuex.Store({
   ],
   state: {
     articles:[],
-    token: null,
+    token: '',
     movies: [],
-    // comments: []
     movieDetail: null,
   },
   getters: {
@@ -26,21 +26,6 @@ export default new Vuex.Store({
     Movies(state) {
       return state.movies
     },
-    logIn(context, payload){
-      const username = payload.username
-      const password = payload.password
-      axios({
-        method: 'post',
-        url: `${API_URL}/accounts/login/`,
-        data: {
-          username, password
-        }
-      })
-        .then((res) => {
-        context.commit('SAVE_TOKEN', res.data.key)
-        })
-      .catch((err) => console.log(err))
-    },
     movieDetail(state) {
       return state.movieDetail
     }
@@ -49,15 +34,16 @@ export default new Vuex.Store({
     GET_ARTICLES(state, articles) {
       state.articles = articles
     },
+    // signup & login 같이 이걸로
     SAVE_TOKEN(state, token) {
       state.token = token
       router.push({name : 'ArticleView'}) // store/index.js $router 접근 불가 -> import를 해야함
     },
-    // GET_COMMENTS(state, comments){
-    //   state.comments = comments
+    // SIGN_UP(state, token){
+    //   state.token = token
     // },
-    SIGN_UP(state, token){
-      state.token = token
+    DELETE_TOKEN(state){
+      state.token = ''
     },
     SET_MOVIES(state, movies) {
       state.movies = movies
@@ -81,16 +67,17 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
-    // getComments(context){
-    //   axios({
-    //     method:'get',
-    //     url: `${API_URL}/api/v1/comments/`
-    //   }).then(res => {
-    //     context.commit('GET_ARTICLES', res.data)
-    //   }).catch(err => {
-    //   console.log(err)
-    //   })
-    // },
+    deleteToken(context){
+      // axios({
+      //   method: 'post',
+      //   url: `${API_URL}/accounts/logout/`,
+      //   headers: {
+      //     Authorization: `Token ${context.state.token}`,
+      //   }
+      // }).then(res =>
+        context.commit('DELETE_TOKEN')
+      // ).catch(err => console.log(err))
+    },
     searchMovies(context, searchTerm){
       console.log(searchTerm)
       axios.get(`http://127.0.0.1:8000/movies/${searchTerm}/`)
@@ -117,8 +104,8 @@ export default new Vuex.Store({
       })
         .then((res) => {
           // console.log(res)
-          context.commit('SIGN_UP', res.data.key)
-          // context.commit('SAVE_TOKEN', res.data.key)
+          // context.commit('SIGN_UP', res.data.key)
+          context.commit('SAVE_TOKEN', res.data.key)
         })
         .catch((err) => {
         console.log(err)
@@ -138,7 +125,10 @@ export default new Vuex.Store({
         .then((res) => {
         context.commit('SAVE_TOKEN', res.data.key)
         })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        console.log(err)
+        alert('아이디 혹은 비밀번호를 확인해주세요!')
+      })
     },
     fetchMovieDetail(context, movieId) {
       axios.get(`http://127.0.0.1:8000/movies/detail/${movieId}/`)

@@ -2,6 +2,7 @@
   <div>
     <p>제목 : {{ article?.title }}</p>
     <p>내용 : {{ article?.content }}</p>
+    <p>작성자 : {{ article?.username }}</p>
     <p>작성시간 : {{ article?.created_at }}</p>
     <p>수정시간 : {{ article?.updated_at }}</p>
   </div>
@@ -14,8 +15,6 @@ const API_URL = 'http://127.0.0.1:8000'
 
 export default {
   name: 'ArticleContent',  // 게시글 내용
-  components: {
-  },
   data() {
     return {
       article: Object,
@@ -39,7 +38,8 @@ export default {
         console.log(err)
       })
     },
-  }
+  },
+
 }
 </script>
 

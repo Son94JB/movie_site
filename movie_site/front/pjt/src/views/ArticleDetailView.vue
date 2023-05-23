@@ -1,11 +1,5 @@
 <template>
   <div>
-    <!-- <div>
-      <p>제목 : {{ article?.title }}</p>
-      <p>내용 : {{ article?.content }}</p>
-      <p>작성시간 : {{ article?.created_at }}</p>
-      <p>수정시간 : {{ article?.updated_at }}</p>
-    </div> -->
     <ArticleContent/><hr>
     <CommentList :article="article"/><hr>
     <router-link :to="{ name: 'ArticleView' }">목록으로</router-link>
@@ -42,10 +36,6 @@ export default {
       }
     }
   },
-  // beforeRouteUpdate(to, from, next){
-  //   this.article.id = to.params.article.id
-  //   next()
-  // },
   methods: {
     fetchArticle(){
       axios.get(`${API_URL}/api/v1/articles/${this.$route.params.id}`)
@@ -55,7 +45,14 @@ export default {
         console.log(err)
       })
     }
-  }
+  },
+  beforeRouterUpdate(to, from, next){
+    if (this.$route.params.article.id != to.$route.params.article.id) {
+      next()
+    }else{
+      next(false)
+    }
+  },
 }
 </script>
 

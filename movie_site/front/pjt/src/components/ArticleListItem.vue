@@ -1,13 +1,15 @@
 <template>
   <div>
     <h4>{{ article.id }}</h4>
-    <p >{{ article.title }}</p>
-    <router-link :to="{
-      name: 'ArticleDetailView',
-      params: {id: article.id }
-      }">
-      [DETAIL]
-    </router-link>
+    <p>{{ article.title }}</p>
+    <p>작성자 : {{ article.username }}</p>
+        <router-link :to="{
+          name: 'ArticleDetailView',
+          params: {id: article.id }
+          }" 
+          >
+          [DETAIL]
+        </router-link>
     <hr>
   </div>
 </template>
@@ -18,8 +20,6 @@ export default {
   props: {
     article: Object
   },
-  methods: {
-  }
 }
 </script>
 

@@ -8,7 +8,7 @@
     </ul>
     <form @submit.prevent="createComment">
       <label for="content">content : </label>
-      <textarea id="content" cols="100" rows="10"></textarea><br>
+      <textarea id="content" cols="100" rows="10" v-model="content"></textarea><br>
       <input type="submit" value="작성">
     </form>
   </div>
@@ -16,6 +16,8 @@
 
 <script>
 import axios from 'axios'
+import { mapState } from 'vuex';
+
 const API_URL = 'http://127.0.0.1:8000'
 
 export default {
@@ -33,8 +35,10 @@ export default {
     };
   },
   created() {
-    console.log(this.article)
     this.fetchComments();
+  },
+  computed: {
+    ...mapState(['token']),
   },
   methods: {
     fetchComments() {
@@ -47,25 +51,39 @@ export default {
           console.error(error);
         });
     },
-    createComment(){
-      const content = this.content
-      const articleId = this.$route.params.id
-      
-      axios({
-        method: "post",
-        url: `${API_URL}/api/v1/articles/${articleId}/comments/`,
-        data: {
-          content,
-        },
-      }).then((res) => {
-        const newComment = res.data
-        this.comment.push(newComment)
-        this.content = ''
-      }).catch((err) => {
-        console.log('시이이이이이이이이이발!!!!! 오류발생!!!!')
-        console.log(err)
-      })
-    },
-  }
+  //   createComment() {
+  //     const commentData = {
+  //     content: this.content,
+  //     user: this.getUserInfo(),
+  //   };
+
+  //   const headers = {
+  //     Authorization: `Token ${this.token}`
+  //   };
+
+  //   axios.post(`${API_URL}/api/v1/articles/${this.$route.params.id}/comments/`,
+  //   commentData, { headers }).then(response => {
+  //       // 성공적으로 댓글을 생성한 경우의 처리
+  //       alert(this.content)
+  //       console.log(response.data);
+  //       // 새로운 댓글을 목록에 추가하거나, 목록을 갱신하는 등의 작업 수행
+  //       this.fetchComments();
+  //       this.content = ''; // 입력 필드 초기화
+  //     })
+  //     .catch(error => {
+  //       // 댓글 생성 중에 오류가 발생한 경우의 처리
+  //       console.error(error);
+  //     });
+  //   },
+  //   getUserInfo() {
+  //     async function fetchUserProfile(token){
+  //       try {
+  //         const response = await axios.get(`${API_URL}/accounts/user/`)
+  //       }
+  //     }
+  //   }
+  },
+
 };
 </script>
+  

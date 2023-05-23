@@ -37,7 +37,7 @@ export default {
       }else if (!password1) {
         alert('비밀번호를 입력해주세요')
       }else if (!password2) {
-        alert('비밀번호 확인을 입력해주세요')
+        alert('비밀번호를 확인해주세요')
       }
 
       const payload = {
