@@ -86,6 +86,7 @@ const routes = [
     name: 'DetailView',
     component: DetailView
   },
+
   {
     path: '/actor/:id',
     name: 'ActorDetailView',

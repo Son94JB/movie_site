@@ -5,39 +5,32 @@
     <p>작성자 : {{ article?.username }}</p>
     <p>작성시간 : {{ article?.created_at }}</p>
     <p>수정시간 : {{ article?.updated_at }}</p>
+    <button @click="onClick">DELETE</button>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-const API_URL = 'http://127.0.0.1:8000'
+// import axios from 'axios'
+// const API_URL = 'http://127.0.0.1:8000'
 
 
 export default {
   name: 'ArticleContent',  // 게시글 내용
-  data() {
-    return {
-      article: Object,
-      name: '',
-      content: '',
-    }
-  },
-  created() {
-    this.getArticleDetail()
-  },
+  props:{
+    article: Object,
+  },  
   methods:{
-    getArticleDetail() {
-      axios({
-        method: 'get',
-        url: `${API_URL}/api/v1/articles/${ this.$route.params.id }/`,
-      })
-      .then((res) => {
-        this.article = res.data
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-    },
+    onClick(){
+      this.$store.commit()
+      // if(this.article.username === this.username){
+      //   axios({
+      //     methods: 'delete',
+      //     url: `${API_URL}/articles/${this.article.id}`
+      //   })
+      // }else{
+      //   alert('자신이 작성한 글만 삭제 가능합니다!')
+      // }
+    }
   },
 
 }

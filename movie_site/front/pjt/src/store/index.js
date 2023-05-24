@@ -73,6 +73,9 @@ export default new Vuex.Store({
     },
     setDirectorDetails(state, detail) {
       state.directorDetail = detail
+    },
+    SET_USER_INFO(state, userInfo) {
+      state.userInfo = userInfo;
     }
   },
   actions: {
@@ -181,7 +184,20 @@ export default new Vuex.Store({
       .catch(error => {
         console.log(error)
       })
-    }
+    },
+    fetchUserInfo({commit, state}){
+      return axios.get(`${API_URL}/accounts/user/`, {
+        headers: {
+          Autherization: `Token ${state.token}`
+        }
+      }).then(res => {
+        const userInfo = res.data
+        commit('SET_USER_INFO', userInfo)
+        return userInfo
+      }).catch(err => {
+        console.lof(err)
+      })
+    },
   },
   modules: {
   },

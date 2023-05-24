@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ArticleContent/><hr>
+    <ArticleContent :article="article"/><hr>
     <CommentList :article="article"/><hr>
     <router-link :to="{ name: 'ArticleView' }">목록으로</router-link>
     <ArticleList/>
@@ -24,8 +24,8 @@ export default {
     CommentList,
   },
   created() {
-    // const articleId = this.$route.params.id
-    this.fetchArticle()
+    const articleId = this.$route.params.id
+    this.fetchArticle(articleId)
   },
   data() {
     return {
@@ -36,9 +36,15 @@ export default {
       }
     }
   },
+  computed : {
+    loadedArticle(){
+      return this.article
+    }
+  },
+
   methods: {
-    fetchArticle(){
-      axios.get(`${API_URL}/api/v1/articles/${this.$route.params.id}`)
+    fetchArticle(id){
+      axios.get(`${API_URL}/api/v1/articles/${id}`)
       .then(res => {
         this.article = res.data
       }).catch(err => {
@@ -46,12 +52,9 @@ export default {
       })
     }
   },
-  beforeRouterUpdate(to, from, next){
-    if (this.$route.params.article.id != to.$route.params.article.id) {
-      next()
-    }else{
-      next(false)
-    }
+  beforeRouteUpdate(to, from, next){
+    this.fetchArticle(to.params.id)
+    next()
   },
 }
 </script>
