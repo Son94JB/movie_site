@@ -3,7 +3,7 @@
     <nav>
       <p>여기는 App입니다.</p>
       <router-link :to="{ name: 'HomeView' }">Home</router-link> | 
-      <router-link :to="{ name: 'SearchView' }">Search</router-link> |
+      <router-link :to="{ name: 'SearchView', params: { id: serachTerm } }">Search</router-link> |
       <router-link :to="{ name: 'ArticleView' }">Article</router-link> |  
       <router-link :to="{ name: 'LogInView' }">LogIn</router-link> |
       <router-link :to="{ name: 'SignUpView' }">SignUp</router-link> |
@@ -42,6 +42,11 @@ nav a.router-link-exact-active {
 
 export default {
   name: 'App',
+  computed: {
+    serachTerm(){
+      return this.$store.state.searchTerm
+    }
+  },
   methods:{
     logOut(){
       this.$store.dispatch('deleteToken')

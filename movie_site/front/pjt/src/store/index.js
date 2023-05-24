@@ -20,6 +20,7 @@ export default new Vuex.Store({
     searchTerm: '',  // 검색어
     actorDetail: null,
     directorDetail: null,
+    movieReviewDetail: null,
     // userDetail: null,
   },
   getters: {
@@ -37,6 +38,9 @@ export default new Vuex.Store({
     },
     directorDetail(state) {
       return state.directorDetail
+    },
+    movieReviewDetail(state) {
+      return state.movieReviewDetail
     },
     // userDetail(state){
     //   return state.userDetail
@@ -64,6 +68,7 @@ export default new Vuex.Store({
     // detail은 fetchMovieDetail에서 받아온 response.data
     setMoviedetails(state, detail) {
       state.movieDetail = detail
+      console.log(state.movieDetail)
     },
     RESET_SEARCH_DATA(state) {
       state.searchTerm = ''
@@ -76,6 +81,16 @@ export default new Vuex.Store({
     },
     setDirectorDetails(state, detail) {
       state.directorDetail = detail
+    },
+    SET_USER_INFO(state, userInfo) {
+      state.userInfo = userInfo;
+    },
+    SET_SEARCH_TERM(state, searchTerm) {
+      state.searchTerm = searchTerm
+    },
+    setMovieReviewDetails(state, detail) {
+      state.movieReviewDetail = detail
+      console.log(state.movieReviewDetail)
     },
     // SET_USER_DETAIL(state, userDetail){
     //   state.userDetail = userDetail
@@ -112,7 +127,7 @@ export default new Vuex.Store({
     // ====================================================================================
     searchMovies(context, searchTerm){
       console.log(searchTerm)
-      // context.commit('SET_SEARCH_TERM', searchTerm)
+      context.commit('SET_SEARCH_TERM', searchTerm)
       axios.get(`http://127.0.0.1:8000/movies/${searchTerm}/`)
       .then(response => {
         context.commit('SET_MOVIES', response.data)
@@ -199,6 +214,28 @@ export default new Vuex.Store({
         console.log(error)
       })
     },
+    fetchUserInfo({commit, state}){
+      return axios.get(`${API_URL}/accounts/user/`, {
+        headers: {
+          Autherization: `Token ${state.token}`
+        }
+      }).then(res => {
+        const userInfo = res.data
+        commit('SET_USER_INFO', userInfo)
+        return userInfo
+      }).catch(err => {
+        console.lof(err)
+      })
+    },
+    fetchMovieReviewDetail(context, reviewId) {
+      axios.get(`${API_URL}/movies/review/${reviewId}/`)
+      .then(response => {
+        context.commit('setMovieReviewDetails', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
     // ====================================================================================
     // setUserDetail({commit, state}){
     //   return axios.get(`${API_URL}/accounts/user/`, {
@@ -214,6 +251,7 @@ export default new Vuex.Store({
     // },
     // ====================================================================================
   },
+  
   modules: {
   },
 })

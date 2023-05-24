@@ -11,7 +11,8 @@ import DetailView from '@/views/DetailView.vue'
 import store from '@/store'
 // import store from  '@/store/index.js'
 import ActorDetailView from '@/views/ActorDetailView.vue'
-
+import DirectorDetailView from '@/views/DirectorDetailView.vue'
+import MovieReviewDetailView from '@/views/MovieReviewDetailView.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -91,6 +92,18 @@ const routes = [
     path: '/actor/:id',
     name: 'ActorDetailView',
     component: ActorDetailView
+  },
+
+  {
+    path: '/director/:id',
+    name: 'DirectorDetailView',
+    component: DirectorDetailView
+  },
+
+  {
+    path: '/moviereivew/:id',
+    name: 'MovieReviewDetailView',
+    component: MovieReviewDetailView
   }
 ]
 

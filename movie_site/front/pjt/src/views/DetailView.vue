@@ -16,7 +16,7 @@
         <div>
           <h2>감독</h2>
           <div v-for="director in movieDetail.director_profiles" :key=director.name>
-          <img v-if="director.profile_path" class="director-profile" :src="`https://image.tmdb.org/t/p/w500/${director.profile_path}`" alt="director profile" />
+          <img @click="getDirectorDetail(director)" v-if="director.profile_path" class="director-profile" :src="`https://image.tmdb.org/t/p/w500/${director.profile_path}`" alt="director profile" />
           <p>{{ director.name }}</p>
           </div>
         </div>
@@ -28,10 +28,22 @@
           <p>{{ movieDetail.genre }}</p>
           </div>
         </div>
-
+        
         <!-- 트레일러 -->
         <div>
           {{ movieDetail.trailer }}
+        </div>
+
+        <!-- 영화 리뷰 -->
+        <hr>
+        <div>
+          <h2>리뷰</h2>
+          <div v-for="review in movieDetail.reviews" :key="review.id" @click="getMovieReviewDetail(review)">
+          <p>작성자: {{ review.user }}</p>
+          <p>내용: {{ review.content }}</p>
+          <p>평점: {{ review.score }}</p>
+          <hr>
+          </div>
         </div>
       </template>
       <template v-else>
@@ -58,10 +70,20 @@ export default {
       YoutubeTrailerVue
     },
     methods: {
+      // 클릭하면 해당 배우의 상세 정보로 이동, 해당 배우 디테일 정보 서버로부터 가져와서 업데이트
       getActorDetail(actor) {
-        console.log(actor);
         this.$router.push({name: 'ActorDetailView', params: {id: actor.id}});
+        this.$store.dispatch('fetchActorDetail', actor.id)
+      },
+      getDirectorDetail(director) {
+        this.$router.push({name: 'DirectorDetailView', params: {id: director.id}});
+        this.$store.dispatch('fetchDirectorDetail', director.id)
+      },
+      getMovieReviewDetail(review) {
+        this.$router.push({name: 'MovieReviewDetailView', params: {id: review.id}});
+        this.$store.dispatch('fetchMovieReviewDetail', review.id)
       }
+
     }
 }
 
