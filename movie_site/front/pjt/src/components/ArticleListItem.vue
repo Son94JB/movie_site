@@ -3,9 +3,10 @@
     <h4>{{ article.id }}</h4>
     <p>{{ article.title }}</p>
     <p>작성자 : {{ article.username }}</p>
-        <router-link :to="{
+      <router-link 
+        :to="{
           name: 'ArticleDetailView',
-          params: {id: article.id }
+          params: {id: article.id },
           }" 
           >
           [DETAIL]
@@ -20,6 +21,9 @@ export default {
   props: {
     article: Object
   },
+  methods: {
+
+  }
 }
 </script>
 

@@ -7,7 +7,7 @@
       <router-link :to="{ name: 'ArticleView' }">Article</router-link> |  
       <router-link :to="{ name: 'LogInView' }">LogIn</router-link> |
       <router-link :to="{ name: 'SignUpView' }">SignUp</router-link> |
-    <button @click="logOut">LogOut</button>
+    <button v-if="this.$store.state.token" @click="logOut">LogOut</button>
     </nav>
     <router-view/>
   </div>
@@ -44,13 +44,9 @@ export default {
   name: 'App',
   methods:{
     logOut(){
-      if(this.$store.getters.isLogin){
       this.$store.dispatch('deleteToken')
       alert('로그아웃')
       this.$router.push({name: 'LogInView'})
-      }else{
-        alert('이미 로그아웃 돼있습니다.')
-      }
     }
   }
 }

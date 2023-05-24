@@ -1,11 +1,12 @@
 <template>
   <div>
     <h2>Comments</h2>
-    <ul>
-      <li v-for="comment in comments" :key="comment.id">
-        {{ comment.content }}
-      </li>
-    </ul>
+      <ul v-if="comments.length > 0">
+        <li v-for="comment in comments" :key="comment.id">
+          {{ comment.content }}
+        </li>
+      </ul>
+      <p v-else>댓글이 없습니다.</p>
     <form @submit.prevent="createComment">
       <label for="content">content : </label>
       <textarea id="content" cols="100" rows="10" v-model="content"></textarea><br>
@@ -16,7 +17,7 @@
 
 <script>
 import axios from 'axios'
-import { mapState } from 'vuex';
+// import { mapState } from 'vuex';
 
 const API_URL = 'http://127.0.0.1:8000'
 
@@ -35,27 +36,45 @@ export default {
     };
   },
   created() {
-    this.fetchComments();
+    const articleId = this.article.id
+    this.fetchComments(articleId);
   },
   computed: {
-    ...mapState(['token']),
+    // ...mapState(['token']),
+  },
+  watch: {
+    article: {
+      immediate: true,
+      handler(article){
+        if(article){
+          const articleId = article.id
+          this.fetchComments(articleId)
+        }
+    }
+  },
   },
   methods: {
     fetchComments() {
       // 해당 게시글의 댓글을 가져오는 API 호출
       axios.get(`${API_URL}/api/v1/comments/${this.$route.params.id}/`)
-        .then(response => {
-          this.comments = response.data;
-        })
-        .catch(error => {
-          console.error(error);
-        });
+      .then(response => {
+        this.comments = response.data;
+      })
+      .catch(error => {
+        if(error.response && error.response.status === 404){
+        this.comments = []
+        }
+        else{
+          console.error(error)
+        }
+      })
     },
-  //   createComment() {
-  //     const commentData = {
-  //     content: this.content,
-  //     user: this.getUserInfo(),
-  //   };
+
+    // createComment() {
+    //   const commentData = {
+    //   content: this.content,
+    //   user: this.getUserInfo(),
+    // };
 
   //   const headers = {
   //     Authorization: `Token ${this.token}`
@@ -83,7 +102,6 @@ export default {
   //     }
   //   }
   },
-
-};
+}
 </script>
   

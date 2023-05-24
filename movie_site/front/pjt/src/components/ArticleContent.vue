@@ -10,30 +10,37 @@
 </template>
 
 <script>
-// import axios from 'axios'
-// const API_URL = 'http://127.0.0.1:8000'
+// import { mapActions, mapGetters } from 'vuex'
+import axios from 'axios'
+const API_URL = 'http://127.0.0.1:8000'
 
 
 export default {
   name: 'ArticleContent',  // 게시글 내용
   props:{
     article: Object,
-  },  
-  methods:{
-    onClick(){
-      this.$store.commit()
-      // if(this.article.username === this.username){
-      //   axios({
-      //     methods: 'delete',
-      //     url: `${API_URL}/articles/${this.article.id}`
-      //   })
-      // }else{
-      //   alert('자신이 작성한 글만 삭제 가능합니다!')
-      // }
-    }
   },
+  computed: {
+    // ...mapGetters(['userDetail']),
+  },
+  created(){
+    // this.setUserDetail()
+  },
+  methods:{
+    // ...mapActions(['setUserDetail']),
 
+    onClick(){
+        axios.delete(`${API_URL}/api/v1/articles/${this.article.id}`, {
+          headers: {
+            Authorization: `Token ${this.$store.state.token}`,
+          },
+        }).catch(err => {
+        console.log(err)
+      })
+    }
+  }
 }
+
 </script>
 
 <style>

@@ -26,6 +26,7 @@ export default {
   created() {
     const articleId = this.$route.params.id
     this.fetchArticle(articleId)
+
   },
   data() {
     return {
@@ -36,16 +37,17 @@ export default {
       }
     }
   },
-  computed : {
-    loadedArticle(){
-      return this.article
-    }
-  },
-
+  // computed : {
+  //   loadedArticle(){
+  //     return this.article
+  //   }
+  // },
   methods: {
     fetchArticle(id){
+      console.log(id)
       axios.get(`${API_URL}/api/v1/articles/${id}`)
       .then(res => {
+        console.log(1111111111111)
         this.article = res.data
       }).catch(err => {
         console.log(err)
@@ -55,6 +57,11 @@ export default {
   beforeRouteUpdate(to, from, next){
     this.fetchArticle(to.params.id)
     next()
+    window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      })
   },
 }
 </script>
