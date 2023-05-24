@@ -21,6 +21,7 @@ export default new Vuex.Store({
     searchTerm: '',  // 검색어
     actorDetail: null,
     directorDetail: null,
+    movieReviewDetail: null,
   },
   getters: {
     isLogin(state) {
@@ -37,6 +38,9 @@ export default new Vuex.Store({
     },
     directorDetail(state) {
       return state.directorDetail
+    },
+    movieReviewDetail(state) {
+      return state.movieReviewDetail
     }
   },
   mutations: {
@@ -61,6 +65,7 @@ export default new Vuex.Store({
     // detail은 fetchMovieDetail에서 받아온 response.data
     setMoviedetails(state, detail) {
       state.movieDetail = detail
+      console.log(state.movieDetail)
     },
     RESET_SEARCH_DATA(state) {
       state.searchTerm = ''
@@ -76,7 +81,14 @@ export default new Vuex.Store({
     },
     SET_USER_INFO(state, userInfo) {
       state.userInfo = userInfo;
-    }
+    },
+    SET_SEARCH_TERM(state, searchTerm) {
+      state.searchTerm = searchTerm
+    },
+    setMovieReviewDetails(state, detail) {
+      state.movieReviewDetail = detail
+      console.log(state.movieReviewDetail)
+    },
   },
   actions: {
     getArticles(context) {
@@ -104,7 +116,7 @@ export default new Vuex.Store({
     },
     searchMovies(context, searchTerm){
       console.log(searchTerm)
-      // context.commit('SET_SEARCH_TERM', searchTerm)
+      context.commit('SET_SEARCH_TERM', searchTerm)
       axios.get(`http://127.0.0.1:8000/movies/${searchTerm}/`)
       .then(response => {
         context.commit('SET_MOVIES', response.data)
@@ -196,6 +208,15 @@ export default new Vuex.Store({
         return userInfo
       }).catch(err => {
         console.lof(err)
+      })
+    },
+    fetchMovieReviewDetail(context, reviewId) {
+      axios.get(`${API_URL}/movies/review/${reviewId}/`)
+      .then(response => {
+        context.commit('setMovieReviewDetails', response.data)
+      })
+      .catch(error => {
+        console.log(error)
       })
     },
   },

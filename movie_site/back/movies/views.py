@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Movie, Actor, Director
-from .serializers import MovieSerializer, MovieDetailSerializer
+from .models import Movie, Actor, Director, MovieReview
+from .serializers import MovieSerializer, MovieReviewSerializer
 import requests
 from .youtubetrailer import get_movie_trailer
 from django.http import JsonResponse
@@ -142,6 +142,10 @@ class MovieDetailView(APIView):
             "trailer_id": trailer_id,
         }
         
+        reivews = MovieReview.objects.filter(movie_id=movie_id)
+        reviews_serializer = MovieReviewSerializer(reivews, many=True)
+        movie_detail["reviews"] = reviews_serializer.data
+
         return Response(movie_detail)
     
 
@@ -208,3 +212,17 @@ class DirectorDetailView(APIView):
         }
 
         return Response(director_detail)
+    
+class MovieReviewView(APIView):
+    def get(self, request, review_id):
+        review = MovieReview.objects.get(id=review_id)
+        serializer = MovieReviewSerializer(review)
+        return Response(serializer.data)
+    
+    def put(self, request, review_id):
+        review = MovieReview.objects.get(id=review_id)
+        serializer = MovieReviewSerializer(review, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
