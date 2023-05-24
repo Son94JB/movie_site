@@ -15,7 +15,6 @@ from .models import Article, Comment
 from django.http import HttpResponseForbidden
 
 
-
 @api_view(['GET', 'POST'])
 def article_list(request):
     if request.method == 'GET':
@@ -26,7 +25,7 @@ def article_list(request):
     elif request.method == 'POST':
         serializer = ArticleSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save(user = request.user)
+            serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
@@ -41,27 +40,28 @@ def article_detail(request, article_pk):
         serializer = ArticleSerializer(article)
         # print(serializer.data)
         return Response(serializer.data)
-    
+
     elif request.method == 'DELETE':
-        print(111111111111111111111111111111111111111)
         if request.user.auth_token.key != request.headers.get('Authorization').split(' ')[1]:
-            print(22222222222222222222222222222222)
+            article.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        else:
             return HttpResponseForbidden('Invalid token')
-        print(3333333333333333333333)
-        article.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-    
+
     elif request.method == 'PUT':
         serializer = ArticleSerializer(article, data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data)
+        if request.user.auth_token.key != request.headers.get('Authorization').split(' ')[1]:
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
+                return Response(serializer.data)
+        else:
+            return HttpResponseForbidden('Invalid token')
 
 # @api_view(['DELETE', 'PUT'])
 # @permission_classes([IsAuthenticated])
 # def article_delete(request):
 #     article = get_object_or_404(Article)
-    
+
 #     if request.method == 'DELETE':
 #         if request.user.auth_token.key == request.header.get('Authorization').splite('')[1]:
 #             article.delete()
@@ -83,7 +83,7 @@ def comment_list(request, article_pk):
         serializer = CommentSerializer(comments, many=True)
 
         return Response(serializer.data)
-    
+
     # elif request.method == 'PUT':
     #     serializer = CommentSerializer(comment, data=request.data)
     #     if serializer.is_valid(raise_exception=True):
@@ -93,6 +93,7 @@ def comment_list(request, article_pk):
     # elif request.method == 'DELETE':
     #     comment.delete()
     #     return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 @api_view(['POST'])
 # @permission_classes([IsAuthenticated])

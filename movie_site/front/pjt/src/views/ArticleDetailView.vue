@@ -1,6 +1,8 @@
 <template>
   <div>
-    <ArticleContent :article="article"/><hr>
+    <ArticleContent :article="article"
+    @delete-success="toUpdatedList"
+    /><hr>
     <CommentList :article="article"/><hr>
     <router-link :to="{ name: 'ArticleView' }">목록으로</router-link>
     <ArticleList/>
@@ -45,13 +47,15 @@ export default {
   methods: {
     fetchArticle(id){
       console.log(id)
-      axios.get(`${API_URL}/api/v1/articles/${id}`)
+      axios.get(`${API_URL}/api/v1/articles/${id}/`)
       .then(res => {
-        console.log(1111111111111)
         this.article = res.data
       }).catch(err => {
         console.log(err)
       })
+    },
+    toUpdatedList(){
+      this.$router.push({name: 'ArticleView '})
     }
   },
   beforeRouteUpdate(to, from, next){

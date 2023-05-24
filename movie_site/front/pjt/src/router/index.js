@@ -39,7 +39,11 @@ const routes = [
     name: 'ArticleCreate',
     component: ArticleCreate
   },
-
+  {
+    path: '/update/:id',
+    name: 'ArticleUpdate',
+    component: () => import("@/views/ArticleUpdate"),
+  },
   {
     path: '/login',
     name: 'LogInView',
