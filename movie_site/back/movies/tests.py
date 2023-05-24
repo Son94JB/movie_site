@@ -1,97 +1,116 @@
-class MovieDetailView(APIView):
-    # async 키워드로 정의된 비동기 함수 작성.
-    # async 키워드로 정의된 함수들이 병렬적으로 실행됨
-    # 즉 fetch_actor_profile, fetch_director_profile 함수들이 병렬적으로 실행됨
-    # 하지만 가장 먼저 get 메서드가 실행되어 이벤트 루프를 생성함
-    
-    async def fetch_actor_profile(self, actor):
-        # 배우의 프로필 사진을 가져오는 비동기 함수
-        url = f"https://api.themoviedb.org/3/search/person?query={actor.name}&include_adult=false&language=ko-KR&page=1"
+import httpx, requests
+from .models import Actor, Director, Movie
+from rest_framework.response import Response
+import asyncio
+
+
+
+
+class MovieDetail():
+    def __init__(self, id, title):
+        self.id = id
+        self.movie_title = title
+
+    async def get_movie_detail(self, id, title):
+        actor_list, director_list, (video_url, video_id) = await asyncio.gather(self.fetch_actor_profile(id), self.fetch_director_profile(id), self.fetch_youtube_trailer(title))
+        return actor_list, director_list, video_url, video_id
+
+    async def fetch_actor_profile(self, id):
+        url = f"https://api.themoviedb.org/3/movie/{id}/credits?language=en-US"
+
         headers = {
             "accept": "application/json",
             "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNDc5YmFiNjM4NDc5Y2YzOTRmODFkN2Y3NTUzNDljZiIsInN1YiI6IjY0NjMwNjE2ZWY4YjMyMDE1NTU2MGZiNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UajmXt4iP952FyFvcmrcMSx_hL-kapU475aJR7V3kWg"
         }
 
-        response = requests.get(url, headers=headers)  # 비동기 HTTP 요청
-        response = response.json()
-
-        # response에서 프로필 사진 경로를 가져옴
-        if "results" in response and len(response["results"]) > 0 and "profile_path" in response["results"][0]:
-            profile_path = response["results"][0]["profile_path"]
-        else:
-            profile_path = None
-
-        # 배우의 이름과 프로필 사진을 반환
-        return {
-            "name": actor.name,
-            "profile_path": profile_path,
-        }
-
-    async def fetch_director_profile(self, director):
-        # 감독의 프로필 사진을 가져오는 비동기 함수
-        url = f"https://api.themoviedb.org/3/search/person?query={director.name}&include_adult=false&language=ko-KR&page=1"
-        headers = {
-            "accept": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNDc5YmFiNjM4NDc5Y2YzOTRmODFkN2Y3NTUzNDljZiIsInN1YiI6IjY0NjMwNjE2ZWY4YjMyMDE1NTU2MGZiNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UajmXt4iP952FyFvcmrcMSx_hL-kapU475aJR7V3kWg"
-        }
-
-        response = requests.get(url, headers=headers)  # 비동기 HTTP 요청
-        response = response.json()
-
-        # response에서 프로필 사진 경로를 가져옴
-        if "results" in response and len(response["results"]) > 0 and "profile_path" in response["results"][0]:
-            profile_path = response["results"][0]["profile_path"]
-        else:
-            profile_path = None
-
-        # 감독의 이름과 프로필 사진을 반환
-        return {
-            "name": director.name,
-            "profile_path": profile_path,
-        }
-
-    async def get(self, request, movie_id):
-
-        # 주어진 movie_id에 해당하는 영화 객체를 가져옴
-        movie = get_object_or_404(Movie, id=movie_id)
-        overview = movie.overview
-        poster = movie.poster
-        actors = movie.actor.all()
-        directors = movie.director.all()
-        genres = movie.genre.all()
-        title = movie.title
-        trailer = movie.trailer
-
-        # 배우들의 프로필을 비동기적으로 가져오는 작업들을 리스트에 추가
-        # 위에서 선언한 fetch_actor_profile함수는 actors 리스트의 actor를 인자로 받고 있음
-        # 그래서 각 actor 마다 fetch_actor_profile 함수를 실행하게 되는데 이때 비동기적으로 실행되는 것. 즉 모든 배우에 대해 fetch_actor_profile 함수가 동시에 실행됨
-        # 아래의 감독도 마찬가지
-        # 그런데 아직 실행한 것은 아님 아래의 await asyncio.gather(*actor_tasks)에서 비로소 실행됨
-        actor_tasks = [self.fetch_actor_profile(actor) for actor in actors]
-        director_tasks = [self.fetch_director_profile(director) for director in directors]
-
-        # 비동기 작업들을 병렬로 실행하고 결과를 가져옴
-        # * 언패킹 연산자를 이용해 리스트 내의 작업들을 개별 인자로 전달
-        # 아래 코드는 배우 프로필을 가져오는 연산들을 비동기적으로 처리하고 모든 작업이 완료되면 결과를 actor_profiles에 저장
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url, headers=headers)
+            
+        credit_response = response.json()
         
-        print(actor_tasks),
-        print(director_tasks),
+        # 배우 프로필을 담을 리스트
+        actor_list = []
 
-        actor_profiles = await asyncio.gather(*actor_tasks)
-        director_profiles = await asyncio.gather(*director_tasks)
+        # 배우정보 가져옴
+        for cast in credit_response["cast"]:
+            if cast["known_for_department"] == "Acting":
+                # actor_data = {
+                #     "fields": {
+                #         "id": cast["id"],
+                #         "name": cast["name"],
+                #         "profile_path": cast["profile_path"],
+                #     }
+                # }
+                # actor = Actor(**actor_data["fields"])
+                # actor.save()
+                # actor_list.append(actor)
+                actor_data = {
+                    "id": cast["id"],
+                    "name": cast["name"],
+                    "profile_path": cast["profile_path"],
+                }
+                actor_list.append(actor_data)
+        
+        return actor_list
 
-        genre_list = [genre.name for genre in genres]
+    async def fetch_director_profile(self, id):
+        url = f"https://api.themoviedb.org/3/movie/{id}/credits?language=en-US"
 
-        # 가져온 필드들을 하나의 딕셔너리로 만듦
-        movie_detail = {
-            "title": title,
-            "overview": overview,
-            "poster": poster,
-            "genre": genre_list,
-            "actor_profiles": actor_profiles,
-            "director_profiles": director_profiles,
-            "trailer": trailer,
+        headers = {
+            "accept": "application/json",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNDc5YmFiNjM4NDc5Y2YzOTRmODFkN2Y3NTUzNDljZiIsInN1YiI6IjY0NjMwNjE2ZWY4YjMyMDE1NTU2MGZiNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UajmXt4iP952FyFvcmrcMSx_hL-kapU475aJR7V3kWg"
         }
-        return Response(movie_detail)
-    
-    asyncio.run(get(self, request, movie_id))
+
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url, headers=headers)
+
+        credit_response = response.json()
+        
+        # 감독 프로필을 담을 리스트
+        director_list = []
+
+        # 감독정보 가져옴
+        for crew in credit_response["crew"]:
+            if crew["job"] == "Director":
+                # director_data = {
+                #     "fields": {
+                #         "id": crew["id"],
+                #         "name": crew["name"],
+                #         "profile_path": crew["profile_path"],
+                #     }
+                # }
+                # director = Director(**director_data["fields"])
+                # director.save()
+                # director_list.append(director)
+                director_data = {
+                    "id": crew["id"],
+                    "name": crew["name"],
+                    "profile_path": crew["profile_path"],
+                }
+                director_list.append(director_data) 
+        
+        return director_list
+        
+
+    async def fetch_youtube_trailer(self, title):
+        base_url = 'https://www.googleapis.com/youtube/v3/search'
+        params = {
+            'part': 'snippet',
+            'q': f'{title} 공식 예고편',
+            'type': 'video',
+            'key': 'AIzaSyDqO27_XD1C7soWNsobVyzyaO0LUvidpFA'
+        }
+
+        async with httpx.AsyncClient() as client:
+            response = await client.get(base_url, params=params)
+
+        data = response.json()
+
+        if 'items' in data and len(data['items']) > 0:
+            trailer = data['items'][0]
+            video_id = trailer['id']['videoId']
+            video_title = trailer['snippet']['title']
+            video_url = f'https://www.youtube.com/watch?v={video_id}'
+            return video_url, video_id
+
+        return None, None

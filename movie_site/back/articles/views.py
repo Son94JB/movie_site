@@ -12,6 +12,8 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from .serializers import ArticleListSerializer, ArticleSerializer, CommentSerializer
 from .models import Article, Comment
 
+from django.http import HttpResponseForbidden
+
 
 
 @api_view(['GET', 'POST'])
@@ -33,6 +35,7 @@ def article_list(request):
 def article_detail(request, article_pk):
     # article = Article.objects.get(pk=article_pk)
     article = get_object_or_404(Article, pk=article_pk)
+    # user = get_object_or_404(User, token=authtoken_token)  user 정의해서 밑에서 user의 토큰이랑 비교해야 됨.
 
     if request.method == 'GET':
         serializer = ArticleSerializer(article)
@@ -40,14 +43,36 @@ def article_detail(request, article_pk):
         return Response(serializer.data)
     
     elif request.method == 'DELETE':
+        print(111111111111111111111111111111111111111)
+        if request.user.auth_token.key != request.headers.get('Authorization').split(' ')[1]:
+            print(22222222222222222222222222222222)
+            return HttpResponseForbidden('Invalid token')
+        print(3333333333333333333333)
         article.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
+    
     elif request.method == 'PUT':
         serializer = ArticleSerializer(article, data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
+
+# @api_view(['DELETE', 'PUT'])
+# @permission_classes([IsAuthenticated])
+# def article_delete(request):
+#     article = get_object_or_404(Article)
+    
+#     if request.method == 'DELETE':
+#         if request.user.auth_token.key == request.header.get('Authorization').splite('')[1]:
+#             article.delete()
+#             return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+#     elif request.method == 'PUT':
+#         serializer = ArticleSerializer(article, data=request.data)
+#         if serializer.is_valid(raise_exception=True):
+#             serializer.save()
+#             return Response(serializer.data)
 
 
 @api_view(['GET', 'PUT', 'DELETE'])

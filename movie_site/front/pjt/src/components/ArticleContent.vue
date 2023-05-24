@@ -5,42 +5,42 @@
     <p>작성자 : {{ article?.username }}</p>
     <p>작성시간 : {{ article?.created_at }}</p>
     <p>수정시간 : {{ article?.updated_at }}</p>
+    <button @click="onClick">DELETE</button>
   </div>
 </template>
 
 <script>
+// import { mapActions, mapGetters } from 'vuex'
 import axios from 'axios'
 const API_URL = 'http://127.0.0.1:8000'
 
 
 export default {
   name: 'ArticleContent',  // 게시글 내용
-  data() {
-    return {
-      article: Object,
-      name: '',
-      content: '',
-    }
+  props:{
+    article: Object,
   },
-  created() {
-    this.getArticleDetail()
+  computed: {
+    // ...mapGetters(['userDetail']),
+  },
+  created(){
+    // this.setUserDetail()
   },
   methods:{
-    getArticleDetail() {
-      axios({
-        method: 'get',
-        url: `${API_URL}/api/v1/articles/${ this.$route.params.id }/`,
-      })
-      .then((res) => {
-        this.article = res.data
-      })
-      .catch((err) => {
+    // ...mapActions(['setUserDetail']),
+
+    onClick(){
+        axios.delete(`${API_URL}/api/v1/articles/${this.article.id}`, {
+          headers: {
+            Authorization: `Token ${this.$store.state.token}`,
+          },
+        }).catch(err => {
         console.log(err)
       })
-    },
-  },
-
+    }
+  }
 }
+
 </script>
 
 <style>

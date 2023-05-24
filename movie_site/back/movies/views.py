@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Movie, Actor, Director
-from .serializers import MovieSerializer, MovieDetailSerializer
+from .models import Movie, Actor, Director, MovieReview
+from .serializers import MovieSerializer, MovieReviewSerializer
 import requests
 from .youtubetrailer import get_movie_trailer
 from django.http import JsonResponse
@@ -9,13 +9,16 @@ from django.core import serializers
 import json
 from rest_framework.decorators import api_view
 from asgiref.sync import async_to_sync
-import asyncio, asgiref
+import asyncio
+import httpx
 # get_object_or_404 임포트
 from django.shortcuts import get_object_or_404
 import requests
+from .tests import MovieDetail
 
 class MovieListView(APIView):
-    def get(self, request, search_term):             
+    def get(self, request, search_term):  
+        
         # 검색 단어로 영화를 검색
         url = f"https://api.themoviedb.org/3/search/movie?query={search_term}&include_adult=false&language=ko-KR&page=1"
 
@@ -23,7 +26,7 @@ class MovieListView(APIView):
             "accept": "application/json",
             "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNDc5YmFiNjM4NDc5Y2YzOTRmODFkN2Y3NTUzNDljZiIsInN1YiI6IjY0NjMwNjE2ZWY4YjMyMDE1NTU2MGZiNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UajmXt4iP952FyFvcmrcMSx_hL-kapU475aJR7V3kWg"
         }
-
+    
         response = requests.get(url, headers=headers)
         response = response.json()
 
@@ -37,7 +40,6 @@ class MovieListView(APIView):
             poster_path = movie["poster_path"]
             genre_ids = movie["genre_ids"]
             overview = movie["overview"]
-            # adult = movie["adult"]
 
             # db에서 받아온 id를 통해 existing_movie를 찾음
             existing_movie = Movie.objects.filter(id=id).first()
@@ -48,50 +50,24 @@ class MovieListView(APIView):
             
             # existing_movie가 없으면 새로운 movie를 생성하고 저장할 것
             else:
-                url = f"https://api.themoviedb.org/3/movie/{id}/credits?language=ko-KR"
-                credit_response = requests.get(url, headers=headers)
-                credit_response = credit_response.json()
+                api = MovieDetail(id, title)
+                actor_list, director_list, video_url, video_id = asyncio.run(api.get_movie_detail(id, title))
+                video_id, video_url = (video_id, video_url)
 
-                # 배우와 감독 정보를 담을 리스트
-                actor_list = []
-                director_list = []
+                actor_profile_list = []
+                director_profile_list = []
 
-                # 배우정보 가져옴
-                for cast in credit_response["cast"]:
-                    if cast["known_for_department"] == "Acting":
-                        actor_data = {
-                            "fields": {
-                                "id": cast["id"],
-                                "name": cast["name"],
-                                "profile_path": cast["profile_path"],
-                            }
-                        }
-                        actor = Actor(**actor_data["fields"])
-                        actor.save()
-                        actor_list.append(actor)
-
-                # 감독정보 가져옴
-                for crew in credit_response["crew"]:
-                    if crew["job"] == "Director":
-                        director_data = {
-                            "fields": {
-                                "id": crew["id"],
-                                "name": cast["name"],
-                                "profile_path": cast["profile_path"],
-                            }
-                        }
-                        director = Director(**director_data["fields"])
-                        director.save()
-                        director_list.append(director) 
-                        # print(director)
-
-                # 영화 제목과 YouTube Data API 키를 입력하세요
-                movie_title = title
-                api_key = 'AIzaSyDqO27_XD1C7soWNsobVyzyaO0LUvidpFA'
-
-                video_title, video_url, video_id = get_movie_trailer(movie_title, api_key)
-
-                # 영화 정보를 담을 딕셔너리
+                for actor_profile in actor_list:
+                    actor = Actor(**actor_profile)
+                    actor.save()
+                    actor_profile_list.append(actor)
+                
+                for director_profile in director_list:
+                    director = Director(**director_profile)
+                    director.save()
+                    director_profile_list.append(director)
+                
+        #         # 영화 정보를 담을 딕셔너리
                 movie_data = {
                     "id": id,
                     "title": title,
@@ -99,21 +75,21 @@ class MovieListView(APIView):
                     "poster": poster_path,
                     "trailer": video_url,
                     "trailer_id": video_id,
-                    # "adult": adult,
                 }
-                # 영화 객체를 생성하고 저장
+        #         # 영화 객체를 생성하고 저장
 
                 # ManyToMany 필드에 배우와 감독 리스트를 할당
                 movie = Movie(**movie_data)
                 movie.save()
                 movie.genre.set(genre_ids)
-                movie.actor.set(actor_list)
-                movie.director.set(director_list)
+                movie.actor.set(actor_profile_list)
+                movie.director.set(director_profile_list)
                 movie.save()
                 movies_list.append(movie)
 
         serializer = MovieSerializer(movies_list, many=True)
         return Response(serializer.data)
+        # return Response(actor_list, director_list, video_url, video_id)
 
 class MovieDetailView(APIView):
     def get(self, request, movie_id):
@@ -148,40 +124,7 @@ class MovieDetailView(APIView):
                 "profile_path": director.profile_path,
             }
             director_profile_list.append(director_profile)
-        # # moviecredit api 호출
-        # url = f"https://api.themoviedb.org/3/movie/{movie.id}/credits?language=en-US"
-
-        # headers = {
-        #     "accept": "application/json",
-        #     "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwNDc5YmFiNjM4NDc5Y2YzOTRmODFkN2Y3NTUzNDljZiIsInN1YiI6IjY0NjMwNjE2ZWY4YjMyMDE1NTU2MGZiNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.UajmXt4iP952FyFvcmrcMSx_hL-kapU475aJR7V3kWg"
-        # }
-
-        # response = requests.get(url, headers=headers)
-        # response = response.json()
-
-        # # 응답받은 response의 cast의 known_for_department가 Acting인 경우 profile_path를 가져옴
-        # if response["cast"]:
-        #     for cast in response["cast"]:
-        #         if cast["known_for_department"] == "Acting":
-        #             actor_data = {
-        #                 "name": cast["name"],
-        #                 "profile_path": cast["profile_path"],
-        #             }
-        #             actor_profile_list.append(actor_data)
         
-        # if response["crew"]:
-        #     for crew in response["crew"]:
-        #         if crew["job"] == "Director":
-        #             director_data = {
-        #                 "name": crew["name"],
-        #                 "profile_path": crew["profile_path"],
-        #             }
-        #             director_profile_list.append(director_data)
-
-
-
-        # genre 순회하면서 genre의 name을 가져옴
-        # 각 장르들의 name을 가져올 것
         genre_list = []
         for genre in genres:
             genre_list.append(genre.name)
@@ -199,6 +142,10 @@ class MovieDetailView(APIView):
             "trailer_id": trailer_id,
         }
         
+        reivews = MovieReview.objects.filter(movie_id=movie_id)
+        reviews_serializer = MovieReviewSerializer(reivews, many=True)
+        movie_detail["reviews"] = reviews_serializer.data
+
         return Response(movie_detail)
     
 
@@ -265,3 +212,17 @@ class DirectorDetailView(APIView):
         }
 
         return Response(director_detail)
+    
+class MovieReviewView(APIView):
+    def get(self, request, review_id):
+        review = MovieReview.objects.get(id=review_id)
+        serializer = MovieReviewSerializer(review)
+        return Response(serializer.data)
+    
+    def put(self, request, review_id):
+        review = MovieReview.objects.get(id=review_id)
+        serializer = MovieReviewSerializer(review, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
