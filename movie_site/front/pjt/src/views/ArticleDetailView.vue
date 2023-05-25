@@ -6,7 +6,6 @@
     <CommentList :article="article"/><hr>
     <router-link :to="{ name: 'ArticleView' }">목록으로</router-link>
     <ArticleList/>
-    <button @click="testMethod">test</button>
   </div>
 </template>
 
