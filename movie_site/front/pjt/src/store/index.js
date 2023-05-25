@@ -20,7 +20,7 @@ export default new Vuex.Store({
     searchTerm: '',  // 검색어
     actorDetail: null,
     directorDetail: null,
-    movieReviewDetail: null,
+    // movieReviewDetail: null,
     // userDetail: null,
   },
   getters: {
@@ -39,9 +39,9 @@ export default new Vuex.Store({
     directorDetail(state) {
       return state.directorDetail
     },
-    movieReviewDetail(state) {
-      return state.movieReviewDetail
-    },
+    // movieReviewDetail(state) {
+    //   return state.movieReviewDetail
+    // },
   },
   mutations: {
     GET_ARTICLES(state, articles) {
@@ -85,10 +85,10 @@ export default new Vuex.Store({
     SET_SEARCH_TERM(state, searchTerm) {
       state.searchTerm = searchTerm
     },
-    setMovieReviewDetails(state, detail) {
-      state.movieReviewDetail = detail
-      console.log(state.movieReviewDetail)
-    },
+    // setMovieReviewDetails(state, detail) {
+    //   state.movieReviewDetail = detail
+    //   console.log(state.movieReviewDetail)
+    // },
     // DELETE_ARTICLE(state) {
     //   state.articles = 
     // },
@@ -224,15 +224,17 @@ export default new Vuex.Store({
         console.lof(err)
       })
     },
-    fetchMovieReviewDetail(context, reviewId) {
-      axios.get(`${API_URL}/movies/review/${reviewId}/`)
-      .then(response => {
-        context.commit('setMovieReviewDetails', response.data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    },
+    // fetchMovieReviewDetail(context, payload) {
+    //   const movieId = payload.movieid
+    //   const reviewId = payload.reviewid
+    //   axios.get(`http://127.0.0.1:8000/movies/review/${movieId}/${reviewId}/`)
+    //   .then(response => {
+    //     context.commit('setMovieReviewDetails', response.data)
+    //   })
+    //   .catch(error => {
+    //     console.log(error)
+    //   })
+    // },
     // ====================================================================================
     // setUserDetail({commit, state}){
     //   return axios.get(`${API_URL}/accounts/user/`, {

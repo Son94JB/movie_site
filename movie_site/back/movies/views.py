@@ -158,19 +158,22 @@ class MovieReviewCreateView(APIView):
 
     def post(self, request):
         serializer = MovieReviewSerializer(data=request.data)
-        print(serializer)
         if serializer.is_valid():
             serializer.save(user = request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
     
 class MovieReviewDeleteView(APIView):
+    authentication_classes = [TokenAuthentication]
+
     def delete(self, request, review_id):
         review = MovieReview.objects.get(id=review_id)
         review.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 class MovieReviewUpdateView(APIView):
+    authentication_classes = [TokenAuthentication]
+
     def put(self, request, review_id):
         review = MovieReview.objects.get(id=review_id)
         serializer = MovieReviewSerializer(review, data=request.data)
@@ -244,15 +247,11 @@ class DirectorDetailView(APIView):
         return Response(director_detail)
     
 class MovieReviewView(APIView):
-    def get(self, request, review_id):
-        review = MovieReview.objects.get(id=review_id)
+    def get(self, request, review_id, movie_id):
+        reivews = MovieReview.objects.filter(movie_id=movie_id)
+        for review in reivews:
+            if review.id == review_id:
+                serializer = MovieReviewSerializer(review)
+                return Response(serializer.data)
         serializer = MovieReviewSerializer(review)
         return Response(serializer.data)
-    
-    def put(self, request, review_id):
-        review = MovieReview.objects.get(id=review_id)
-        serializer = MovieReviewSerializer(review, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors)
