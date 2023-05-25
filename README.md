@@ -1,92 +1,58 @@
-# Movie_Site
+# I. 팀원 정보 및 업무 분담 내역
+
+## 1. 팀원
+
+### 1) 손준배(팀장)
+
+### 2) 공익규
 
 
 
-## Getting started
+## 2. 업무분담
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+### : 백, 프론트 둘 다 경험해보고 싶어서 기능별로 분담
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+### 1) 손준배
 
-## Add your files
+### 2) 공익규
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
++ 영화 검색 기능 구현 및 페이지 구현
++ 영화 리뷰 CRUD 구현 및 페이지
 
-```
-cd existing_repo
-git remote add origin https://lab.ssafy.com/junbae/movie_site.git
-git branch -M master
-git push -uf origin master
-```
 
-## Integrate with your tools
 
-- [ ] [Set up project integrations](https://lab.ssafy.com/junbae/movie_site/-/settings/integrations)
+# II. 목표 서비스 구현 및 실제 구현 정도
 
-## Collaborate with your team
+## 1. 영화 검색시 저장은 서버가, 프론트에서는 화면만 뿌리게 비동기적으로 작동시키고 싶었으나 시간 부족으로 실패
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+## 2. 게시글에 좋아요 및 회원 구독 기능 추가하여 베스트 게시글 구현하려 했으나 실패함
 
-## Test and Deploy
+## 3. 유튜브 트레일러 기능구현 실패함
 
-Use the built-in continuous integration in GitLab.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
 
-***
+# III. ERD
 
-# Editing this README
+![모델.png](README/1404ef386d0cbdad83a0be04d385cf29af5d2176.png)
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
 
-## Name
-Choose a self-explaining name for your project.
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+# IV. 추천 알고리즘에 대한 기술적 설명
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+# 
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+# V. 서비스 대표 기능에 대한 설명
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+### 1) 영화 검색기능
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+### 2) 영화 추천기능
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+# VI. 느낀점
 
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+## 우선 기획이 정말 중요하다고 느꼈다. 처음에 DB를 설계할 때 생각보다 너무 오래 걸렸고 DB를 완성하자 마자 바로 프로젝트에 돌입했다. 그래서 프론트의 구성을 짜임새 있게 가져가지 못했고 그 결과 엄청나게 많은 뷰와 컴포넌트들이 만들어졌다. 뷰의 장점인 컴포넌트의 재활용을 거의 하지 못했다. 백에서도 문제가 있었는데 한 명은 데코레이터를 쓰고 한 명은 APIView를 상속받아 클래스 형태로 만들어서 일관성과 가독성이 떨어졌다. 깃을 활용할 때도 계속 충돌이 발생해 하루에 일정 시간은 충돌을 병합하는데 소진했다. 그런 반면에 백과 프론트가 어떻게 데이터를 주고 받는지에 대한 큰 흐름은 알 수 있었고 아주 값진 경험이었다. 다만 정말 아는 게 없다는 걸 느꼈다. chatGPT가 없었다면 지금 보다 훨씬 더 떨어지는 완성도를 보였으리라 예상된다. 이번에 프로젝트가 미완이었던 만큼 추후에도 계속 수정 보완할 것이고, 그 만큼 성장하고 싶다.

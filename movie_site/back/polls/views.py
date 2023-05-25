@@ -64,9 +64,18 @@ def recommend(request):
             user_id=user_id).values_list('genre', flat=True)
         # 4, 장르 아이디들로 영화들 중 같은 장르 아이디를 가진 영화들을 추출
         movies = Movie.objects.filter(
-            genre__in=genre_ids).values_list('title', flat=True)
-        movie_titles = set(movies)
+            genre__in=genre_ids)
+        movie_list = []
+        for movie in movies:
+            movie_title = movie.title
+            movie_poster = movie.poster
+            movie_data = {
+                'title': movie_title,
+                'poster': movie_poster
+            }
+            movie_list.append(movie_data)
+            print(movie_list)
         # 5, 추출한 영화 모음을 뷰로 보내준다
-        return Response({'movie_titles': movie_titles}, status=status.HTTP_200_OK)
+        return Response(movie_list, status=status.HTTP_200_OK)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)

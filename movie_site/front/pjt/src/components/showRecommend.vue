@@ -1,10 +1,10 @@
 <template>
     <div>
       <button @click="getRecommend">추천영화 받기</button>
-      <p v-for="movie in movies"
-      :key="movie.id"
-      >
-      추천작 : {{ movie }} </p>
+      <div v-for="movie in movies" :key="movie.id">
+        <h2>{{ movie.title }}</h2>
+        <img :src="`https://image.tmdb.org/t/p/w500/${movie.poster}`">
+      </div>
     </div>
 </template>
 
