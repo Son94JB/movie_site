@@ -13,6 +13,7 @@ import store from '@/store'
 import ActorDetailView from '@/views/ActorDetailView.vue'
 import DirectorDetailView from '@/views/DirectorDetailView.vue'
 import MovieReviewDetailView from '@/views/MovieReviewDetailView.vue'
+import RecommendView from '@/views/RecommendView.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -108,7 +109,14 @@ const routes = [
     path: '/moviereivew/:id',
     name: 'MovieReviewDetailView',
     component: MovieReviewDetailView
+  },
+
+  {
+    path: '/recommend',
+    name: 'RecommendView',
+    component: RecommendView
   }
+
 ]
 
 const router = new VueRouter({

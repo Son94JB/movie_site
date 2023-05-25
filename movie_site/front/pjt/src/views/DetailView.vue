@@ -39,10 +39,11 @@
         <hr>
         <div>
           <h2>리뷰</h2>
-          <div v-for="review in movieReviews" :key="review.id" @click="getMovieReviewDetail(review)">
+          <div v-for="review in movieReviews" :key="review.id">
           <p>작성자: {{ review.user }}</p>
           <p>내용: {{ review.content }}</p>
           <p>평점: {{ review.score }}</p>
+          <button @click="getMovieReviewDetail(review.id)">수정</button>
           <button @click="deleteReview(review.id)">삭제</button>
           <hr>
           </div>
@@ -81,24 +82,15 @@ export default {
         score: 0,
       }
     },
-    watch: {
-      'movieReviews': {
-        deep: true,
-        handler(newMovieDetail) {
-          console.log('reviews 변경됨')
-          this.updateMovieReviews(newMovieDetail.reviews)        
-        },
-      }
-    },
     computed: {
         // movieDetail를 통해 vuex의 state에 getters로 접근
-        movieDetail() {
+        movieDetail() {  // 영화 디테일 전체 정보(배우, 감독, 리뷰리스트 등)
             return this.$store.getters.movieDetail
         },
-        movieReviews() {
+        movieReviews() { // 영화 디테일의 리뷰 리스트
             return this.$store.state.movieDetail.reviews
         },
-        movieID() {
+        movieId() { //영화 id
           return this.$route.params.id
         }
     },
@@ -118,15 +110,13 @@ export default {
         this.$router.push({name: 'DirectorDetailView', params: {id: director.id}});
         this.$store.dispatch('fetchDirectorDetail', director.id)
       },
-      getMovieReviewDetail(review) {
+      getMovieReviewDetail(reviewId) {
         // movieid를 정수로 변환
-        const movieid = parseInt(this.movieID);
-        const reviewid = parseInt(review.id);
+        const movieid = parseInt(this.movieId);
+        const reviewid = parseInt(reviewId);
         this.$router.push({name: 'MovieReviewDetailView', params: {id: reviewid}});
         this.$store.dispatch('fetchMovieDetail', movieid)
       },
-      //path('review/create/', views.MovieReviewCreateView.as_view(), name='movie-review-create'),
-
       createReview(){
         console.log(this.movieDetail.id)
         const content = this.content
@@ -151,22 +141,26 @@ export default {
           console.log(error)
         })
       },
-      
-    //   deleteReview(reviewId) {
-    //     axios.delete(`http://127.0.0.1:8000/movies/review/${reviewId}/delete/`, {
-    //       headers: {
-    //         Authorization: `Token ${this.$store.state.token}`,
-    //       },
-    //     })
-    //     .then(response => {
-    //       console.log(response);
-    //       // 삭제된 리뷰를 화면에서 제거
-    //       this.movieDetail.reviews = this.movieDetail.reviews.filter(review => review.id !== reviewId);
-    //     })
-    //     .catch(error => {
-    //       console.error(error);
-    //     });
-    // },
+      // 리뷰 삭제
+      deleteReview(reviewId) {// 전달받은 review는 리뷰 디테일
+        axios.delete(`http://127.0.0.1:8000/movies/review/${reviewId}/delete/`, { // 리뷰 디테일에서 id 추출
+          movie: this.movieID
+        }, {
+          headers: {
+            Authorization: `Token ${this.$store.state.token}`,
+          },
+        })
+        .then(response => {
+          console.log(response);
+          // 삭제된 리뷰를 화면에서 제거
+          const movieid = parseInt(this.movieId);
+          this.$store.dispatch('fetchMovieDetail', movieid) // 서버에서 다시 데이터 불러오고,
+          // this.$router.push({name: 'DetailView', params: {id: this.movieID}}) // 영화 디테일 페이지로 이동
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
 
     }
 }

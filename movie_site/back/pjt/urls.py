@@ -9,4 +9,5 @@ urlpatterns = [
     # path('accounts/user/', UserDetailsView.as_view(), name='user_details'),
     path('accounts/signup/', include('dj_rest_auth.registration.urls')),
     path('movies/', include('movies.urls')),
+    path('polls/', include('polls.urls')),
 ]

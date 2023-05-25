@@ -20,6 +20,8 @@ export default new Vuex.Store({
     searchTerm: '',  // 검색어
     actorDetail: null,
     directorDetail: null,
+    genres: [],
+    poll: null,
     // movieReviewDetail: null,
     // userDetail: null,
   },
@@ -38,6 +40,12 @@ export default new Vuex.Store({
     },
     directorDetail(state) {
       return state.directorDetail
+    },
+    genres(state) {
+      return state.genres
+    },
+    poll(state) {
+      return state.poll
     },
     // movieReviewDetail(state) {
     //   return state.movieReviewDetail
@@ -84,6 +92,12 @@ export default new Vuex.Store({
     },
     SET_SEARCH_TERM(state, searchTerm) {
       state.searchTerm = searchTerm
+    },
+    setGenres(state, genres) {
+      state.genres = genres
+    },
+    setPoll(state, poll) {
+      state.poll = poll
     },
     // setMovieReviewDetails(state, detail) {
     //   state.movieReviewDetail = detail
@@ -187,6 +201,25 @@ export default new Vuex.Store({
         console.log(error)
       })
     },
+    fetchGenres(context) {
+      axios.get('http://127.0.0.1:8000/polls/genre/')
+      .then(response => {
+        context.commit('setGenres', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+    submitSurvey(context, payload) {
+      axios.post('http://127.0.0.1:8000/polls/createpoll/', payload)
+      .then(response => {
+        context.commit('setPoll', response.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
     // ====================================================================================
     resetSearchTerm(context) {
       context.commit('RESET_SEARCH_DATA', '');

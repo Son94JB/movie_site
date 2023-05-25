@@ -168,6 +168,7 @@ class MovieReviewDeleteView(APIView):
 
     def delete(self, request, review_id):
         review = MovieReview.objects.get(id=review_id)
+        print(review)
         review.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
@@ -255,3 +256,4 @@ class MovieReviewView(APIView):
                 return Response(serializer.data)
         serializer = MovieReviewSerializer(review)
         return Response(serializer.data)
+    

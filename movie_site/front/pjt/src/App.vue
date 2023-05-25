@@ -7,6 +7,7 @@
       <router-link :to="{ name: 'ArticleView' }">Article</router-link> |  
       <router-link :to="{ name: 'LogInView' }">LogIn</router-link> |
       <router-link :to="{ name: 'SignUpView' }">SignUp</router-link> |
+      <router-link :to="{ name: 'RecommendView' }">Recommend</router-link> |
     <button v-if="this.$store.state.token" @click="logOut">LogOut</button>
     </nav>
     <router-view/>
