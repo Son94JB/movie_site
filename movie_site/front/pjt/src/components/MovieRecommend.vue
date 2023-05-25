@@ -13,6 +13,8 @@
   </template>
   
   <script>
+  import axios from 'axios';
+
   export default {
     data() {
       return {
@@ -25,6 +27,9 @@
     computed: {
       genres() {
         return this.$store.getters.genres
+      },
+      token(){
+        return this.$store.getters.token
       }
     },
     methods: {
@@ -35,8 +40,20 @@
       submitSurvey() {
         // 사용자가 선택한 장르 목록을 백엔드로 전송하는 비동기 함수 호출
         // 예를 들면 axios.post('/api/survey', { genres: this.selectedGenres }) 등
-        this.$store.dispatch('submitSurvey', this.selectedGenres)
-        console.log(this.selectedGenres)
+        // this.$store.dispatch('submitSurvey', this.selectedGenres, this.token)
+        // console.log(this.token)
+        // console.log(this.selectedGenres)
+        axios.post('http://127.0.0.1:8000/polls/createpoll/', this.selectedGenres, {
+          headers: {
+            Authorization: `Token ${this.token}`
+          },
+        })
+        .then(response => {
+            console.log(response)
+        })
+        .catch(error => {
+            console.log(error)
+        })
       }
     }
   };

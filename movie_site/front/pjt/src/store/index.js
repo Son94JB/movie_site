@@ -47,6 +47,9 @@ export default new Vuex.Store({
     poll(state) {
       return state.poll
     },
+    token(state) {
+      return state.token
+    },
     // movieReviewDetail(state) {
     //   return state.movieReviewDetail
     // },
@@ -210,8 +213,12 @@ export default new Vuex.Store({
         console.log(error)
       })
     },
-    submitSurvey(context, payload) {
-      axios.post('http://127.0.0.1:8000/polls/createpoll/', payload)
+    submitSurvey(context, payload, token) {
+      axios.post('http://127.0.0.1:8000/polls/createpoll/', payload, {
+        headers: {
+          Authorization: `Token ${token}`
+        },
+      })
       .then(response => {
         context.commit('setPoll', response.data)
       })
