@@ -85,10 +85,10 @@ export default new Vuex.Store({
     SET_SEARCH_TERM(state, searchTerm) {
       state.searchTerm = searchTerm
     },
-    setMovieReviewDetails(state, detail) {
-      state.movieReviewDetail = detail
-      console.log(state.movieReviewDetail)
-    },
+    // setMovieReviewDetails(state, detail) {
+    //   state.movieReviewDetail = detail
+    //   console.log(state.movieReviewDetail)
+    // },
     // DELETE_ARTICLE(state) {
     //   state.articles = 
     // },
