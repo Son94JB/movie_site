@@ -24,6 +24,15 @@ export default {
     this.getArticles()
   },
 
+<<<<<<< HEAD
+    onClick(){
+        axios.delete(`${API_URL}/api/v1/articles/${this.article.id}/`, {
+          headers: {
+            Authorization: `Token ${this.$store.state.token}`,
+          },
+        }).catch(err => {
+        console.log(err)
+=======
   methods:{
 
     getArticles() {
@@ -35,6 +44,7 @@ export default {
         headers: {
           Authorization: `Token ${this.$store.state.token}`,
         },
+>>>>>>> a3dda479796e2014e0d679d0c9d6ab3c98995126
       })
       .then((res) => {
         this.$emit('delete-success'),
