@@ -30,7 +30,7 @@ export default {
     // ...mapActions(['setUserDetail']),
 
     onClick(){
-        axios.delete(`${API_URL}/api/v1/articles/${this.article.id}`, {
+        axios.delete(`${API_URL}/api/v1/articles/${this.article.id}/`, {
           headers: {
             Authorization: `Token ${this.$store.state.token}`,
           },

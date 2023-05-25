@@ -45,7 +45,7 @@ export default {
   methods: {
     fetchArticle(id){
       console.log(id)
-      axios.get(`${API_URL}/api/v1/articles/${id}`)
+      axios.get(`${API_URL}/api/v1/articles/${id}/`)
       .then(res => {
         console.log(1111111111111)
         this.article = res.data
