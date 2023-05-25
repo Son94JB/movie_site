@@ -1,5 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
 from .models import Movie, Actor, Director, MovieReview
 from .serializers import MovieSerializer, MovieReviewSerializer
 import requests
@@ -15,6 +16,8 @@ import httpx
 from django.shortcuts import get_object_or_404
 import requests
 from .tests import MovieDetail
+from rest_framework.authentication import TokenAuthentication
+
 
 class MovieListView(APIView):
     def get(self, request, search_term):  
@@ -132,6 +135,7 @@ class MovieDetailView(APIView):
 
         # 가져온 필드들을 하나의 딕셔너리로 만듦
         movie_detail = {
+            "id": movie_id, # "id": movie.id 도 가능하지만, movie_id를 사용하는 이유는 url에서 movie_id를 가져오기 위함이다.
             "title": title,
             "overview": overview,
             "poster": poster,
@@ -142,12 +146,38 @@ class MovieDetailView(APIView):
             "trailer_id": trailer_id,
         }
         
+        # review의 get 요청은 여기서 처리
         reivews = MovieReview.objects.filter(movie_id=movie_id)
         reviews_serializer = MovieReviewSerializer(reivews, many=True)
         movie_detail["reviews"] = reviews_serializer.data
 
         return Response(movie_detail)
+
+class MovieReviewCreateView(APIView):
+    authentication_classes = [TokenAuthentication]
+
+    def post(self, request):
+        serializer = MovieReviewSerializer(data=request.data)
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save(user = request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
     
+class MovieReviewDeleteView(APIView):
+    def delete(self, request, review_id):
+        review = MovieReview.objects.get(id=review_id)
+        review.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class MovieReviewUpdateView(APIView):
+    def put(self, request, review_id):
+        review = MovieReview.objects.get(id=review_id)
+        serializer = MovieReviewSerializer(review, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
 
 # ActorDetailView 만들 것
 # ActorDetialView 에서는 배우의 사진, 참여한 영화, 참여한 영화의 첫 번째 포스터를 가져올 것

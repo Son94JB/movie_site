@@ -1,6 +1,7 @@
 <template>
     <div>
       <template v-if="movieDetail">
+        <p>{{ movieDetail.id }}</p>
         <h1>{{ movieDetail.title }}</h1>
         <p>{{ movieDetail.overview }}</p>
         <img v-if="movieDetail.poster" class="movie-poster" :src="`https://image.tmdb.org/t/p/w500/${movieDetail.poster}`" alt="movie poster" />
@@ -34,7 +35,7 @@
           {{ movieDetail.trailer }}
         </div>
 
-        <!-- 영화 리뷰 -->
+        <!-- 영화 리뷰 조회 -->
         <hr>
         <div>
           <h2>리뷰</h2>
@@ -44,6 +45,18 @@
           <p>평점: {{ review.score }}</p>
           <hr>
           </div>
+        </div>
+
+        <!-- 영화 리뷰 작성 -->
+        <div>
+          <h2>리뷰 작성</h2>
+          <form @submit.prevent="createReview">
+            <label for="content">내용</label>
+            <input type="text" id="content" v-model.trim="content" />
+            <label for="score">평점</label>
+            <input type="number" id="score" v-model="score" />
+            <input type="submit" id="submit">
+          </form>
         </div>
       </template>
       <template v-else>
@@ -55,11 +68,18 @@
   
 
 <script>
+import axios from 'axios'
 import YoutubeTrailerVue from '@/components/YoutubeTrailer.vue'
 
 
 export default {
     name: 'DetailView', // 영화 상세 정보
+    data() {
+      return {
+        content: '',
+        score: 0
+      }
+    },
     computed: {
         // movieDetail를 통해 vuex의 state에 getters로 접근
         movieDetail() {
@@ -82,6 +102,27 @@ export default {
       getMovieReviewDetail(review) {
         this.$router.push({name: 'MovieReviewDetailView', params: {id: review.id}});
         this.$store.dispatch('fetchMovieReviewDetail', review.id)
+      },
+      //path('review/create/', views.MovieReviewCreateView.as_view(), name='movie-review-create'),
+
+      createReview(){
+        console.log(this.movieDetail.id)
+        const content = this.content
+        const score = parseInt(this.score); // score를 정수로 변환
+        const movie = parseInt(this.movieDetail.id); // movie를 정수로 변환
+        axios({
+          method: "post",
+          url: 'http://127.0.0.1:8000/movies/review/create/',
+          data: {content, score, movie},
+        })
+        .then(response => {
+          console.log(response)
+          const createdReview = response.data
+          this.movieDetail.reviews.push(createdReview)
+        })
+        .catch(error => {
+          console.log(error)
+        })
       }
 
     }

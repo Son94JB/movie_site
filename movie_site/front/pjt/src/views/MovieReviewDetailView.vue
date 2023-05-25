@@ -1,13 +1,6 @@
 <template>
   <div>
-    <h1>리뷰 수정</h1>
-    <form @submit.prevent="updateReview">
-      <label for="content">내용:</label>
-      <textarea v-model="editedContent" id="content"></textarea>
-      <label for="score">점수:</label>
-      <input type="number" v-model="editedScore" id="score">
-      <button type="submit">수정</button>
-    </form>
+    
   </div>
 </template>
 
