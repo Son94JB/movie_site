@@ -20,8 +20,8 @@ export default new Vuex.Store({
     searchTerm: '',  // 검색어
     actorDetail: null,
     directorDetail: null,
-    movieReviewDetail: null,
-    userDetail: null,
+    // movieReviewDetail: null,
+    // userDetail: null,
   },
   getters: {
     isLogin(state) {
@@ -39,9 +39,9 @@ export default new Vuex.Store({
     directorDetail(state) {
       return state.directorDetail
     },
-    movieReviewDetail(state) {
-      return state.movieReviewDetail
-    },
+    // movieReviewDetail(state) {
+    //   return state.movieReviewDetail
+    // },
   },
   mutations: {
     GET_ARTICLES(state, articles) {
@@ -89,6 +89,9 @@ export default new Vuex.Store({
       state.movieReviewDetail = detail
       console.log(state.movieReviewDetail)
     },
+    // DELETE_ARTICLE(state) {
+    //   state.articles = 
+    // },
   },
   // ====================================================================================
   // ====================================================================================
@@ -208,15 +211,28 @@ export default new Vuex.Store({
         console.log(error)
       })
     },
-    fetchMovieReviewDetail(context, reviewId) {
-      axios.get(`${API_URL}/movies/review/${reviewId}/`)
-      .then(response => {
-        context.commit('setMovieReviewDetails', response.data)
-      })
-      .catch(error => {
-        console.log(error)
+    fetchUserInfo({commit, state}){
+      return axios.get(`${API_URL}/accounts/user/`, {
+        headers: {
+          Autherization: `Token ${state.token}`
+        }
+      }).then(res => {
+        const userInfo = res.data
+        commit('SET_USER_INFO', userInfo)
+        return userInfo
+      }).catch(err => {
+        console.lof(err)
       })
     },
+    // fetchMovieReviewDetail(context, reviewId) {
+    //   axios.get(`${API_URL}/movies/review/${reviewId}/`)
+    //   .then(response => {
+    //     context.commit('setMovieReviewDetails', response.data)
+    //   })
+    //   .catch(error => {
+    //     console.log(error)
+    //   })
+    // },
     // ====================================================================================
     getUserName(context){
       // 해당 유저의 정보(토큰)도 같이 받아와서 그거에 맞는 userDetail을 가져와야 됨.
