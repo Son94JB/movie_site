@@ -247,7 +247,7 @@ export default new Vuex.Store({
     fetchUserInfo({commit, state}){
       return axios.get(`${API_URL}/accounts/user/`, {
         headers: {
-          Autherization: `Token ${state.token}`
+          Authorization: `Token ${state.token}`
         }
       }).then(res => {
         const userInfo = res.data

@@ -6,6 +6,7 @@
     <CommentList :article="article"/><hr>
     <router-link :to="{ name: 'ArticleView' }">목록으로</router-link>
     <ArticleList/>
+    <button @click="testMethod">test</button>
   </div>
 </template>
 
@@ -55,7 +56,18 @@ export default {
     },
     toUpdatedList(){
       this.$router.push({name: 'ArticleView '})
-    }
+    },
+    testMethod(){
+      axios.get(`${API_URL}/api/v1/test/`, {
+        headers: {
+          Authorization: `Token ${this.$store.state.token}`,
+        },
+      }).then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      })
+    },
   },
   beforeRouteUpdate(to, from, next){
     this.fetchArticle(to.params.id)
