@@ -9,7 +9,6 @@ class GenreSerializer(serializers.ModelSerializer):
 
 class PollSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
-
     class Meta:
         model = Poll
         fields = '__all__'
