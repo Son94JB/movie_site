@@ -5,12 +5,12 @@
     <p>작성자 : {{ article?.username }}</p>
     <p>작성시간 : {{ article?.created_at }}</p>
     <p>수정시간 : {{ article?.updated_at }}</p>
-    <button @click="onClick">DELETE</button>
+    <button @click="onClickDelete">DELETE</button>
+    <router-link class="temp" :to="{name:'ArticleUpdate', params:{id:this.article.id} }">수정하기</router-link>
   </div>
 </template>
 
 <script>
-// import { mapActions, mapGetters } from 'vuex'
 import axios from 'axios'
 const API_URL = 'http://127.0.0.1:8000'
 
@@ -20,29 +20,60 @@ export default {
   props:{
     article: Object,
   },
-  computed: {
-    // ...mapGetters(['userDetail']),
-  },
   created(){
-    // this.setUserDetail()
+    this.getArticles()
   },
-  methods:{
-    // ...mapActions(['setUserDetail']),
 
-    onClick(){
-        axios.delete(`${API_URL}/api/v1/articles/${this.article.id}`, {
-          headers: {
-            Authorization: `Token ${this.$store.state.token}`,
-          },
-        }).catch(err => {
-        console.log(err)
+  methods:{
+
+    getArticles() {
+        this.$store.dispatch('getArticles')
+    },
+    onClickDelete(){
+      // console.log(this.$store.state.articles)
+      axios.delete(`${API_URL}/api/v1/articles/${this.article.id}/`, {
+        headers: {
+          Authorization: `Token ${this.$store.state.token}`,
+        },
       })
+      .then((res) => {
+        this.$emit('delete-success'),
+        alert('삭제 완료되었습니다!!', res)
+      })
+      .catch((err) => {
+        alert('자신의 게시물만 삭제 가능합니다!');
+        console.log(err);
+      })
+    },
+    onClickUpdate(){
+      console.log(11111)
+    //   axios.put(`${API_URL}/api/v1/articles/${this.article.id}/`, {
+    //     headers: {
+    //       Authorization: `Token ${this.$store.state.token}`,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     this.$emit('delete-success'),
+    //     alert('삭제 완료되었습니다!!', res)
+    //   })
+    //   .catch((err) => {
+    //     alert('자신의 게시물만 삭제 가능합니다!');
+    //     console.log(err);
+    //   })
     }
-  }
+  },
 }
 
 </script>
 
-<style>
-
+<style scoped>
+.temp{
+  text-decoration-line:none;
+}
+.temp:hover{
+  color: aqua;
+}
+.temp:visited{
+  color:red;
+}
 </style>

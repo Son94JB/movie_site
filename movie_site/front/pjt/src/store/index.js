@@ -42,9 +42,6 @@ export default new Vuex.Store({
     movieReviewDetail(state) {
       return state.movieReviewDetail
     },
-    // userDetail(state){
-    //   return state.userDetail
-    // },
   },
   mutations: {
     GET_ARTICLES(state, articles) {
@@ -92,9 +89,9 @@ export default new Vuex.Store({
       state.movieReviewDetail = detail
       console.log(state.movieReviewDetail)
     },
-    // SET_USER_DETAIL(state, userDetail){
-    //   state.userDetail = userDetail
-    // }
+    // DELETE_ARTICLE(state) {
+    //   state.articles = 
+    // },
   },
   // ====================================================================================
   // ====================================================================================
