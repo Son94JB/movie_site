@@ -6,12 +6,14 @@
     <p>작성시간 : {{ article?.created_at }}</p>
     <p>수정시간 : {{ article?.updated_at }}</p>
     <button @click="onClickDelete">DELETE</button>
-    <router-link class="temp" :to="{name:'ArticleUpdate', params:{id:this.article.id} }">수정하기</router-link>
+    <button @click="onClickUpdate">UPDATE</button>
+    <!-- <router-link class="temp" :to="{name:'ArticleUpdate', params:{id:this.article.id} }" @click="onClickUpdate">수정하기</router-link> -->
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import { mapActions, mapState } from 'vuex'
 const API_URL = 'http://127.0.0.1:8000'
 
 
@@ -22,18 +24,14 @@ export default {
   },
   created(){
     this.getArticles()
+    this.getUserName()
+  },
+  computed:{
+    ...mapState(['userDetail']),
   },
 
-<<<<<<< HEAD
-    onClick(){
-        axios.delete(`${API_URL}/api/v1/articles/${this.article.id}/`, {
-          headers: {
-            Authorization: `Token ${this.$store.state.token}`,
-          },
-        }).catch(err => {
-        console.log(err)
-=======
   methods:{
+    ...mapActions(['getUserName']),
 
     getArticles() {
         this.$store.dispatch('getArticles')
@@ -44,33 +42,25 @@ export default {
         headers: {
           Authorization: `Token ${this.$store.state.token}`,
         },
->>>>>>> a3dda479796e2014e0d679d0c9d6ab3c98995126
       })
       .then((res) => {
         this.$emit('delete-success'),
         alert('삭제 완료되었습니다!!', res)
+        this.$router.push({ name: 'ArticleView'});
       })
       .catch((err) => {
         alert('자신의 게시물만 삭제 가능합니다!');
         console.log(err);
       })
     },
-    onClickUpdate(){
-      console.log(11111)
-    //   axios.put(`${API_URL}/api/v1/articles/${this.article.id}/`, {
-    //     headers: {
-    //       Authorization: `Token ${this.$store.state.token}`,
-    //     },
-    //   })
-    //   .then((res) => {
-    //     this.$emit('delete-success'),
-    //     alert('삭제 완료되었습니다!!', res)
-    //   })
-    //   .catch((err) => {
-    //     alert('자신의 게시물만 삭제 가능합니다!');
-    //     console.log(err);
-    //   })
-    }
+    onClickUpdate(event) {
+      event.preventDefault();
+      if (this.article.username !== this.userDetail.username){
+        alert('작성자만 수정할 수 있습니다!');
+      }else{
+        this.$router.push({ name: 'ArticleUpdate', params: { id: this.article.id } });
+      }
+    },
   },
 }
 
@@ -84,6 +74,6 @@ export default {
   color: aqua;
 }
 .temp:visited{
-  color:red;
+  color: violet;
 }
 </style>

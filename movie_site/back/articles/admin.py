@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Article, Comment, CommentLike, ArticleLike  
+# from .models import Article, Comment, CommentLike, ArticleLike  
 # Register your models here.
 
 # class ArticleAdmin(admin.ModelAdmin):

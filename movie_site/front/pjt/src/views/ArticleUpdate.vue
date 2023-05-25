@@ -12,6 +12,7 @@
       </textarea><br>
       <input type="submit" id="submit">
     </form>
+    <button @click="goBack">뒤로가기</button>
   </div>
 </template>
 
@@ -34,7 +35,7 @@ export default {
         Authorization: `Token ${this.$store.state.token}`,
       }})
       .then((res) => {
-        console.log(res);
+        this.article = res.data
       }).catch((err) => {
         console.log(err);
       });
@@ -46,33 +47,31 @@ export default {
     ,
     updateArticle(){
       
-      const title = this.title
-      const content = this.content
+      const { title, content } = this.article
 
-      // if (!title){
-      //   alert("제목을 입력해주세요!!")
-      //   return
-      // } else if (!content){
-      //   alert("내용을 입력해주세요!!")
-      //   return
-      // }
+      if (!title || !content){
+        alert('제목과 내용을 둘 다 입력해주세요!!!!!!!!!!!!!!!!!!!!!')
+        return;
+      }
 
-      axios({
-        method: "put",
-        url: `${API_URL}/api/v1/articles/${this.article.id}/`,
-        data: {
-          title, content
-          },
+      axios
+      .put(`${API_URL}/api/v1/articles/${this.article.id}/`, this.article, {
         headers:{
           Authorization: `Token ${this.$store.state.token}`
         }
-      }).then(() => {
+      })
+      .then(() => {
         // console.log(res)
-        this.$router.push(`/articles/${this.article.id}`)
-      }).catch((err) => {
+        alert('게시글 수정 완료!')
+        this.$router.push(`/${this.$route.params.id}`)
+      })
+      .catch((err) => {
         console.log(err)
       })
-    } 
+    },
+    goBack(){
+      this.$router.push(`/${this.$route.params.id}`)
+    }
   }
 }
 </script>

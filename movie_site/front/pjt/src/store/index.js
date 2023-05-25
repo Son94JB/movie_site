@@ -21,7 +21,7 @@ export default new Vuex.Store({
     actorDetail: null,
     directorDetail: null,
     movieReviewDetail: null,
-    // userDetail: null,
+    userDetail: null,
   },
   getters: {
     isLogin(state) {
@@ -79,8 +79,8 @@ export default new Vuex.Store({
     setDirectorDetails(state, detail) {
       state.directorDetail = detail
     },
-    SET_USER_INFO(state, userInfo) {
-      state.userInfo = userInfo;
+    SET_USER_DETAIL(state, userDetail) {
+      state.userDetail = userDetail;
     },
     SET_SEARCH_TERM(state, searchTerm) {
       state.searchTerm = searchTerm
@@ -89,9 +89,6 @@ export default new Vuex.Store({
       state.movieReviewDetail = detail
       console.log(state.movieReviewDetail)
     },
-    // DELETE_ARTICLE(state) {
-    //   state.articles = 
-    // },
   },
   // ====================================================================================
   // ====================================================================================
@@ -211,19 +208,6 @@ export default new Vuex.Store({
         console.log(error)
       })
     },
-    fetchUserInfo({commit, state}){
-      return axios.get(`${API_URL}/accounts/user/`, {
-        headers: {
-          Autherization: `Token ${state.token}`
-        }
-      }).then(res => {
-        const userInfo = res.data
-        commit('SET_USER_INFO', userInfo)
-        return userInfo
-      }).catch(err => {
-        console.lof(err)
-      })
-    },
     fetchMovieReviewDetail(context, reviewId) {
       axios.get(`${API_URL}/movies/review/${reviewId}/`)
       .then(response => {
@@ -234,18 +218,21 @@ export default new Vuex.Store({
       })
     },
     // ====================================================================================
-    // setUserDetail({commit, state}){
-    //   return axios.get(`${API_URL}/accounts/user/`, {
-    //     headers: {
-    //       Authorization: `Token ${state.token}`
-    //     }
-    //   }).then(res => {
-    //     const userDetail = res.data
-    //     commit('SET_USER_DETAIL', userDetail)
-    //   }).catch(err => {
-    //     console.log(err)
-    //   })
-    // },
+    getUserName(context){
+      // 해당 유저의 정보(토큰)도 같이 받아와서 그거에 맞는 userDetail을 가져와야 됨.
+      const token = context.state.token
+
+      axios.get(`${API_URL}/accounts/user/`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        }
+      }).then(res => {
+        const userDetail = res.data
+        context.commit('SET_USER_DETAIL', userDetail)
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     // ====================================================================================
   },
   
